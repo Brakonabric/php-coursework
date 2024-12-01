@@ -14,20 +14,71 @@ function canAddEvent($role): bool
  */
 function getEvents($conn, $startDate, $endDate, $userRole): array
 {
-    $sql = "SELECT * FROM events WHERE date BETWEEN ? AND ?";
+    $sql = "SELECT * FROM events WHERE 
+            (date BETWEEN ? AND ?) OR 
+            (end_date IS NOT NULL AND end_date BETWEEN ? AND ?) OR
+            (date <= ? AND (end_date >= ? OR end_date IS NULL))";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $startDate, $endDate);
+    $stmt->bind_param('ssssss', $startDate, $endDate, $startDate, $endDate, $endDate, $startDate);
     $stmt->execute();
     $result = $stmt->get_result();
     $events = [];
 
     while ($row = $result->fetch_assoc()) {
         if (hasAccess($row['access'], $userRole)) {
-            $events[$row['date']][] = $row;
+            // Если событие многодневное, добавляем его на все дни
+            if (!empty($row['end_date'])) {
+                $currentDate = new DateTime($row['date']);
+                $endDate = new DateTime($row['end_date']);
+                
+                while ($currentDate <= $endDate) {
+                    $dateKey = $currentDate->format('Y-m-d');
+                    $events[$dateKey][] = $row;
+                    $currentDate->modify('+1 day');
+                }
+            } else {
+                $events[$row['date']][] = $row;
+            }
         }
     }
 
     return $events;
+}
+
+/**
+ * Возвращает доступные типы событий
+ */
+function getEventTypes(): array
+{
+    return [
+        'match' => 'Матч',
+        'training' => 'Тренировка',
+        'open_training' => 'Открытая тренировка',
+        'meeting' => 'Собрание',
+        'admin_meeting' => 'Административное собрание',
+        'masterclass' => 'Мастер-класс',
+        'sports_camp' => 'Спортивный лагерь',
+        'other' => 'Другое'
+    ];
+}
+
+/**
+ * Проверяет доступ к типу события для роли
+ */
+function hasEventTypeAccess($eventType, $userRole): bool
+{
+    $typeAccess = [
+        'match' => ['admin', 'coach', 'player', 'fan', 'guest'],
+        'training' => ['admin', 'coach', 'player'],
+        'open_training' => ['admin', 'coach', 'player', 'fan'],
+        'meeting' => ['admin', 'coach', 'player'],
+        'admin_meeting' => ['admin', 'coach'],
+        'masterclass' => ['admin', 'coach', 'player', 'fan', 'guest'],
+        'sports_camp' => ['admin', 'coach', 'player', 'fan', 'guest'],
+        'other' => ['admin', 'coach', 'player', 'fan']
+    ];
+
+    return isset($typeAccess[$eventType]) && in_array($userRole, $typeAccess[$eventType]);
 }
 
 /**

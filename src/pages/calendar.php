@@ -12,18 +12,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_event'])) {
     if (canAddEvent($userRole)) {
         $title = $_POST['title'];
         $date = $_POST['date'];
+        $end_date = !empty($_POST['end_date']) ? $_POST['end_date'] : null;
         $time = $_POST['time'];
         $location = $_POST['location'];
         $type = $_POST['type'];
-        $access = $type === 'other' ? $_POST['access'] : getAccessByType($type); // Доступ определяется типом
+        $access = $type === 'other' ? $_POST['access'] : getAccessByType($type);
         $description = $_POST['description'];
 
-        $validAccessValues = ['guest', 'fan', 'player', 'coach', 'admin'];
-        if (!in_array($access, $validAccessValues, true)) {
-            $errorMessage = "Недопустимое значение для доступа.";
+        // Проверка, что дата окончания не раньше даты начала
+        if ($end_date && strtotime($end_date) < strtotime($date)) {
+            $errorMessage = "Дата окончания не может быть раньше даты начала.";
         } else {
-            $stmt = $conn->prepare("INSERT INTO events (title, date, time, location, type, access, description) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param('sssssss', $title, $date, $time, $location, $type, $access, $description);
+            $sql = "INSERT INTO events (title, date, end_date, time, location, type, access, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssssssss', $title, $date, $end_date, $time, $location, $type, $access, $description);
+            
             if ($stmt->execute()) {
                 $successMessage = "Событие успешно добавлено!";
             } else {
@@ -65,6 +68,8 @@ function getAccessByType($type)
         'open_training' => 'fan',
         'meeting' => 'player',
         'admin_meeting' => 'coach',
+        'masterclass' => 'guest',
+        'sports_camp' => 'guest',
     ];
 
     return $accessByType[$type] ?? 'guest'; // По умолчанию — 'guest'
@@ -125,7 +130,9 @@ function getAccessByType($type)
     <div id="event-modal" class="modal">
         <div class="modal-event">
             <h3 id="event-title">Событие</h3>
-            <p><strong>Дата:</strong> <span id="event-date"></span></p>
+            <p><strong>Тип:</strong> <span id="event-type"></span></p>
+            <p><strong>Дата начала:</strong> <span id="event-date"></span></p>
+            <p><strong>Дата окончания:</strong> <span id="event-end-date"></span></p>
             <p><strong>Время:</strong> <span id="event-time"></span></p>
             <p><strong>Место:</strong> <span id="event-location"></span></p>
             <p><strong>Описание:</strong> <span id="event-description"></span></p>
@@ -147,8 +154,11 @@ function getAccessByType($type)
                 <label for="title">Название:</label>
                 <input type="text" id="title" name="title" required>
 
-                <label for="date">Дата:</label>
+                <label for="date">Дата начала:</label>
                 <input type="date" id="date" name="date" required>
+
+                <label for="end_date">Дата окончания:</label>
+                <input type="date" id="end_date" name="end_date">
 
                 <label for="time">Время:</label>
                 <input type="time" id="time" name="time" required>
@@ -158,12 +168,9 @@ function getAccessByType($type)
 
                 <label for="type">Тип:</label>
                 <select id="type" name="type" onchange="toggleAccessField(this.value)">
-                    <option value="match">Матч</option>
-                    <option value="training">Тренировка</option>
-                    <option value="open_training">Открытая тренировка</option>
-                    <option value="meeting">Собрание</option>
-                    <option value="admin_meeting">Административное собрание</option>
-                    <option value="other">Другое</option>
+                    <?php foreach (getEventTypes() as $value => $label): ?>
+                        <option value="<?= htmlspecialchars($value) ?>"><?= htmlspecialchars($label) ?></option>
+                    <?php endforeach; ?>
                 </select>
 
                 <div id="access-field" style="display: none;">
@@ -190,6 +197,10 @@ function getAccessByType($type)
 <script>
     function openAddEventModal() {
         document.getElementById('add-event-modal').style.display = 'flex';
+        // Установка минимальной даты окончания равной дате начала
+        document.getElementById('date').addEventListener('change', function() {
+            document.getElementById('end_date').min = this.value;
+        });
     }
 
     function closeAddEventModal() {
@@ -207,9 +218,11 @@ function getAccessByType($type)
 
     function openEventModal(eventData) {
         if (!eventData) return;
-        const event = JSON.parse(eventData)[0]; // Открываем первое событие
+        const event = JSON.parse(eventData)[0];
         document.getElementById('event-title').innerText = event.title;
+        document.getElementById('event-type').innerText = event.type;
         document.getElementById('event-date').innerText = event.date;
+        document.getElementById('event-end-date').innerText = event.end_date || 'Нет';
         document.getElementById('event-time').innerText = event.time;
         document.getElementById('event-location').innerText = event.location;
         document.getElementById('event-description').innerText = event.description;

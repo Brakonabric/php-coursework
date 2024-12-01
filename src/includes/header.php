@@ -3,16 +3,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Подключение файла access.php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.php';
 
-// Установка роли по умолчанию
 if (!isset($_SESSION['user_role'])) {
     $_SESSION['user_role'] = 'guest';
 }
 
-// Вывод текущей роли (для отладки)
-echo "<p>Ваша роль: {$_SESSION['user_role']}</p>";
+// Закомментируйте или удалите эту строку
+// echo "<p>Ваша роль: {$_SESSION['user_role']}</p>";
 ?>
 
 <!DOCTYPE html>
