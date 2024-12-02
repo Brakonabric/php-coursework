@@ -1,7 +1,7 @@
 <?php
 $page_title = "Галерея";
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+include '../includes/header.php';
+require_once '../config.php';
 
 // Проверка прав доступа для загрузки фото
 $can_manage = isset($_SESSION['user_role']) && ($_SESSION['user_role'] === 'trainer' || $_SESSION['user_role'] === 'admin');
@@ -40,7 +40,7 @@ $result = $conn->query($query);
 <div class="gallery-container">
     <?php if ($can_manage): ?>
     <div class="upload-section">
-        <form action="/actions/upload_photo.php" method="post" enctype="multipart/form-data">
+        <form action="/pages/gallery/actions/upload_photo.php" method="post" enctype="multipart/form-data">
             <input type="file" name="photo" required accept="image/*">
             <input type="text" name="title" placeholder="Название фото (необязательно)">
             <button type="submit">Загрузить</button>
@@ -307,7 +307,7 @@ document.querySelectorAll('.gallery-item').forEach(item => {
 
 function openPhoto(id) {
     currentPhotoId = id;
-    fetch(`/actions/get_photo.php?id=${id}`)
+    fetch(`/pages/gallery/actions/get_photo.php?id=${id}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('modalImg').src = data.image_path;
@@ -333,7 +333,7 @@ function navigatePhoto(direction) {
 }
 
 function loadComments(photoId) {
-    fetch(`/actions/get_comments.php?photo_id=${photoId}`)
+    fetch(`/pages/gallery/actions/get_comments.php?photo_id=${photoId}`)
         .then(response => response.json())
         .then(comments => {
             const commentsHtml = comments.map(comment => `
@@ -348,7 +348,7 @@ function loadComments(photoId) {
 }
 
 function likePhoto(photoId) {
-    fetch('/actions/like_photo.php', {
+    fetch('/pages/gallery/actions/like_photo.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -367,7 +367,7 @@ function submitComment(event) {
     const form = event.target;
     const comment = form.comment.value;
 
-    fetch('/actions/add_comment.php', {
+    fetch('/pages/gallery/actions/add_comment.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -392,4 +392,4 @@ document.querySelector('.close').onclick = function() {
 }
 </script>
 
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?> 
+<?php include '../includes/footer.php'; ?> 

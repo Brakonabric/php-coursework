@@ -3,7 +3,7 @@ ob_start();
 $page_title = 'Редактирование события';
 include '../../../includes/header.php';
 include '../../../config.php';
-require_once '../../../functions/translations.php';
+require_once '../../../modules/events/templates.php';
 
 // Проверка прав доступа
 if (!hasAccess('coach', $_SESSION['user_role'])) {
@@ -32,8 +32,8 @@ if (!$event) {
     exit();
 }
 
-// Получение типов событий и их переводов
-$translations = getTranslations();
+// Получение типов событий и их шаблонов
+$templates = getEventTemplates();
 
 // Получение информации о правах доступа для типов событий
 $sql = "SELECT id, visible_roles FROM event_types";
@@ -111,7 +111,7 @@ $has_end_date = $event['start_date'] !== $event['end_date'];
             <div class="form-group">
                 <label for="event_type">Тип события:</label>
                 <select id="event_type" name="event_type" required>
-                    <?php foreach ($translations as $type_id => $type): ?>
+                    <?php foreach ($templates as $type_id => $type): ?>
                         <option value="<?= $type_id ?>" 
                                 <?= $event['event_type'] === $type_id ? 'selected' : '' ?>>
                             <?= htmlspecialchars($type['label']) ?>
@@ -205,7 +205,7 @@ $has_end_date = $event['start_date'] !== $event['end_date'];
 // Функция для отображения видимости события
 function updateEventVisibility(eventType) {
     const eventTypes = <?= json_encode($event_access) ?>;
-    const translations = <?= json_encode($translations) ?>;
+    const templates = <?= json_encode($templates) ?>;
     const visibilityDiv = document.getElementById('event_visibility');
     const customTypeGroup = document.getElementById('custom_type_group');
     const roleCheckboxes = document.querySelectorAll('input[name="visible_roles[]"]');
@@ -219,7 +219,7 @@ function updateEventVisibility(eventType) {
         roleCheckboxes.forEach(cb => cb.required = true);
     } else {
         const roles = eventTypes[eventType];
-        const eventData = translations[eventType];
+        const eventData = templates[eventType];
         
         if (eventData) {
             if (eventType === 'public_event' && !titleInput.value) {

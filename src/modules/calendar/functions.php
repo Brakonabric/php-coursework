@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/access.php';
+require_once __DIR__ . '/../../includes/access.php';
 
 /**
  * Проверяет, может ли пользователь добавлять события.

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once '../../../config.php';
 header('Content-Type: application/json');
 
 if (!isset($_GET['id'])) {

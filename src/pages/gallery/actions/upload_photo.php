@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once '../../../config.php';
 
 // Проверка прав доступа
 if (!isset($_SESSION['user_role']) || !in_array($_SESSION['user_role'], ['trainer', 'admin'])) {

@@ -2,7 +2,7 @@
 $page_title = 'Календарь событий';
 include '../includes/header.php';
 include '../config.php';
-require_once '../functions/calendar_functions.php';
+require_once '../modules/calendar/functions.php';
 
 // Получение роли пользователя
 $userRole = $_SESSION['user_role'] ?? 'guest';
