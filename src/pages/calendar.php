@@ -87,7 +87,7 @@ $months = getMonthsData($currentYear, $currentMonth, $events);
             </div>
             <div class="add-event-btn-box">
                 <?php if (hasAccess('coach', $userRole)): ?>
-                    <a href="/pages/create-event.php" class="btn btn-primary">Создать событие</a>
+                    <a href="/pages/calendar/event/create.php" class="btn btn-primary">Создать событие</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -176,7 +176,7 @@ $months = getMonthsData($currentYear, $currentMonth, $events);
             // Обновляем ссылку на редактирование
             const editLink = document.getElementById('edit-event-link');
             if (editLink) {
-                editLink.href = '/pages/edit-event.php?id=' + event.id;
+                editLink.href = '/pages/calendar/event/edit.php?id=' + event.id;
             }
             
             document.getElementById('event-modal').style.display = 'flex';

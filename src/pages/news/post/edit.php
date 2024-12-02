@@ -1,8 +1,8 @@
 <?php
 ob_start();
 $page_title = 'Редактирование новости';
-include '../includes/header.php';
-include '../config.php';
+include '../../../includes/header.php';
+include '../../../config.php';
 
 // Определяем директорию для загрузки
 $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/news/';
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $conn->commit();
         ob_end_clean();
-        header("Location: /pages/post.php?id=$post_id");
+        header("Location: /pages/news/post.php?id=$post_id");
         exit();
         
     } catch (Exception $e) {
@@ -178,7 +178,7 @@ function processImage($file, $upload_dir, $prefix) {
             
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                <a href="/pages/post.php?id=<?= $post_id ?>" class="btn btn-secondary">Отмена</a>
+                <a href="/pages/news/post.php?id=<?= $post_id ?>" class="btn btn-secondary">Отмена</a>
             </div>
         </form>
     </div>
@@ -219,4 +219,4 @@ document.getElementById('extra_images').addEventListener('change', function() {
 });
 </script>
 
-<?php include '../includes/footer.php'; ?> 
+<?php include '../../../includes/footer.php'; ?> 

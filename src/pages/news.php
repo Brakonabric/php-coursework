@@ -33,14 +33,14 @@ $result = $stmt->get_result();
     
     <?php if (hasAccess('coach', $_SESSION['user_role'])): ?>
         <div class="create-post-button">
-            <a href="/pages/create-post.php" class="btn">Создать новость</a>
+            <a href="/pages/news/post/create.php" class="btn">Создать новость</a>
         </div>
     <?php endif; ?>
     
     <div class="news-grid">
         <?php while ($post = $result->fetch_assoc()): ?>
             <article class="news-card">
-                <a href="/pages/post.php?id=<?= $post['id'] ?>">
+                <a href="/pages/news/post.php?id=<?= $post['id'] ?>">
                     <?php if ($post['image_path_preview']): ?>
                         <img src="<?= htmlspecialchars($post['image_path_preview']) ?>" alt="Превью новости">
                     <?php endif; ?>

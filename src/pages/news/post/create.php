@@ -3,8 +3,8 @@
 ob_start();
 
 $page_title = 'Создание новости';
-include '../includes/header.php';
-include '../config.php';
+include '../../../includes/header.php';
+include '../../../config.php';
 
 // Проверка прав доступа
 if (!hasAccess('coach', $_SESSION['user_role'])) {
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Очищаем буфер и перенаправляем
         ob_end_clean();
-        header("Location: /pages/post.php?id=$news_id");
+        header("Location: /pages/news/post.php?id=$news_id");
         exit();
         
     } catch (Exception $e) {
@@ -187,4 +187,4 @@ document.getElementById('extra_images').addEventListener('change', function() {
 });
 </script>
 
-<?php include '../includes/footer.php'; ?> 
+<?php include '../../../includes/footer.php'; ?> 
