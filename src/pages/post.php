@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_post']) && has
         }
         
         // Удаляем комментарии
-        $sql = "DELETE FROM comments WHERE news_id = ?";
+        $sql = "DELETE FROM news_comments WHERE news_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $post_id);
         $stmt->execute();
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_post']) && has
 
 // Получение комментариев
 $sql = "SELECT c.*, u.name as user_name 
-        FROM comments c 
+        FROM news_comments c 
         LEFT JOIN users u ON c.user_id = u.id 
         WHERE c.news_id = ? 
         ORDER BY c.created_at DESC";
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_comment'])) {
         $content = trim(str_replace(["\r\n", "\r"], "\n", $_POST['content']));
         $user_id = $_SESSION['user_id'];
         
-        $sql = "INSERT INTO comments (news_id, user_id, content) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO news_comments (news_id, user_id, comment) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('iis', $post_id, $user_id, $content);
         
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_comment'])) {
                             <span class="comment-date"><?= date('d.m.Y H:i', strtotime($comment['created_at'])) ?></span>
                         </div>
                         <div class="comment-content">
-                            <?= nl2br(htmlspecialchars($comment['content'])) ?>
+                            <?= nl2br(htmlspecialchars($comment['comment'])) ?>
                         </div>
                     </div>
                 <?php endwhile; ?>

@@ -1,0 +1,333 @@
+<?php
+ob_start();
+$page_title = 'Создание события';
+include '../includes/header.php';
+include '../config.php';
+require_once '../functions/translations.php';
+
+// Проверка прав доступа
+if (!hasAccess('coach', $_SESSION['user_role'])) {
+    header('Location: /404.php');
+    exit();
+}
+
+// Получение типов событий и их переводов
+$translations = getTranslations();
+
+// Получение информации о правах доступа для типов событий
+$sql = "SELECT id, visible_roles FROM event_types";
+$result = $conn->query($sql);
+$event_access = [];
+while ($row = $result->fetch_assoc()) {
+    $event_access[$row['id']] = json_decode($row['visible_roles'], true);
+}
+
+// Обработка отправки формы
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $title = $conn->real_escape_string($_POST['title']);
+        $description = $conn->real_escape_string($_POST['description']);
+        $location = $conn->real_escape_string($_POST['location']);
+        
+        // Обработка типа события и видимости
+        if ($_POST['event_type'] === 'other') {
+            $event_type = $conn->real_escape_string($_POST['custom_type']);
+            $visible_roles = isset($_POST['visible_roles']) ? $_POST['visible_roles'] : [];
+            $event_visibility = json_encode($visible_roles);
+        } else {
+            $event_type = $conn->real_escape_string($_POST['event_type']);
+            $event_visibility = json_encode($event_access[$event_type]);
+        }
+        
+        $start_date = $_POST['start_date'];
+        $start_time = $_POST['start_time'];
+        
+        // Формируем полную дату и время начала
+        $start_datetime = $start_date . ' ' . $start_time;
+        
+        // Обрабатываем дату и время окончания только если включен чекбокс
+        if (isset($_POST['has_end_date']) && $_POST['has_end_date'] === '1') {
+            $end_date = $_POST['end_date'];
+            $end_time = $_POST['end_time'];
+            $end_datetime = $end_date . ' ' . $end_time;
+        } else {
+            $end_datetime = $start_datetime;
+        }
+        
+        $sql = "INSERT INTO events (title, description, event_type, start_date, end_date, location, created_by, event_visibility) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ssssssss', $title, $description, $event_type, $start_datetime, $end_datetime, $location, $_SESSION['user_id'], $event_visibility);
+        
+        if ($stmt->execute()) {
+            $event_id = $conn->insert_id;
+            ob_end_clean();
+            header('Location: /pages/calendar.php');
+            exit();
+        } else {
+            throw new Exception("Ошибка при создании события");
+        }
+    } catch (Exception $e) {
+        $error = "Ошибка: " . $e->getMessage();
+    }
+}
+?>
+
+<main>
+    <div class="create-event-container">
+        <h1>Создание события</h1>
+        
+        <?php if (isset($error)): ?>
+            <div class="error-message"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        
+        <form method="POST" class="create-event-form">
+            <div class="form-group">
+                <label for="event_type">Тип события:</label>
+                <select id="event_type" name="event_type" required>
+                    <?php foreach ($translations as $type_id => $type): ?>
+                        <option value="<?= $type_id ?>" 
+                                <?= isset($_POST['event_type']) && $_POST['event_type'] === $type_id ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($type['label']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <div id="event_visibility" class="event-visibility-info"></div>
+            </div>
+            
+            <div class="form-group" id="custom_type_group" style="display: none;">
+                <label for="custom_type">Укажите тип события:</label>
+                <input type="text" id="custom_type" name="custom_type" 
+                       value="<?= isset($_POST['custom_type']) ? htmlspecialchars($_POST['custom_type']) : '' ?>">
+                
+                <label>Видимость события:</label>
+                <div class="role-checkboxes">
+                    <label><input type="checkbox" name="visible_roles[]" value="guest"> Гости</label>
+                    <label><input type="checkbox" name="visible_roles[]" value="fan"> Болельщики</label>
+                    <label><input type="checkbox" name="visible_roles[]" value="team_member"> Члены команды</label>
+                    <label><input type="checkbox" name="visible_roles[]" value="coach"> Тренеры</label>
+                    <label><input type="checkbox" name="visible_roles[]" value="admin"> Администраторы</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Название события:</label>
+                <input type="text" id="title" name="title" required 
+                       value="<?= isset($_POST['title']) ? htmlspecialchars($_POST['title']) : '' ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Описание:</label>
+                <textarea id="description" name="description" required><?= isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '' ?></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Место проведения:</label>
+                <input type="text" id="location" name="location" required
+                       value="<?= isset($_POST['location']) ? htmlspecialchars($_POST['location']) : '' ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="start_date">Дата начала:</label>
+                <input type="date" id="start_date" name="start_date" required 
+                       value="<?= isset($_POST['start_date']) ? htmlspecialchars($_POST['start_date']) : date('Y-m-d') ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="start_time">Время начала:</label>
+                <input type="time" id="start_time" name="start_time" required 
+                       value="<?= isset($_POST['start_time']) ? htmlspecialchars($_POST['start_time']) : '09:00' ?>">
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="has_end_date" name="has_end_date" value="1" 
+                           <?= isset($_POST['has_end_date']) ? 'checked' : '' ?>>
+                    Указать дату и время окончания
+                </label>
+            </div>
+            
+            <div id="end_date_group" style="display: none;">
+                <div class="form-group">
+                    <label for="end_date">Дата окончания:</label>
+                    <input type="date" id="end_date" name="end_date" 
+                           value="<?= isset($_POST['end_date']) ? htmlspecialchars($_POST['end_date']) : '' ?>">
+                </div>
+                
+                <div class="form-group">
+                    <label for="end_time">Время окончания:</label>
+                    <input type="time" id="end_time" name="end_time" 
+                           value="<?= isset($_POST['end_time']) ? htmlspecialchars($_POST['end_time']) : '' ?>">
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Создать событие</button>
+                <a href="/pages/calendar.php" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+// Функция для отображения видимости события
+function updateEventVisibility(eventType) {
+    const eventTypes = <?= json_encode($event_access) ?>;
+    const translations = <?= json_encode($translations) ?>;
+    const visibilityDiv = document.getElementById('event_visibility');
+    const customTypeGroup = document.getElementById('custom_type_group');
+    const roleCheckboxes = document.querySelectorAll('input[name="visible_roles[]"]');
+    const titleInput = document.getElementById('title');
+    const descriptionInput = document.getElementById('description');
+    const locationInput = document.getElementById('location');
+    
+    if (eventType === 'other') {
+        visibilityDiv.innerHTML = '';
+        customTypeGroup.style.display = 'block';
+        roleCheckboxes.forEach(cb => cb.required = true);
+        
+        // Очищаем плейсхолдеры
+        titleInput.placeholder = '';
+        descriptionInput.placeholder = '';
+        locationInput.placeholder = '';
+    } else {
+        const roles = eventTypes[eventType];
+        const eventData = translations[eventType];
+        
+        if (eventData) {
+            if (eventType === 'public_event') {
+                // Для публичных событий используем плейсхолдеры
+                titleInput.value = '';
+                descriptionInput.value = '';
+                locationInput.value = '';
+                
+                titleInput.placeholder = eventData.placeholder.title;
+                descriptionInput.placeholder = eventData.placeholder.description;
+                locationInput.placeholder = eventData.placeholder.location;
+            } else {
+                // Для остальных типов используем значения по умолчанию
+                titleInput.value = eventData.title;
+                descriptionInput.value = eventData.description;
+                locationInput.value = eventData.location;
+                
+                titleInput.placeholder = '';
+                descriptionInput.placeholder = '';
+                locationInput.placeholder = '';
+            }
+        }
+        
+        // Отображаем информацию о видимости
+        visibilityDiv.innerHTML = '<p>Видно для: ' + formatVisibilityText(roles) + '</p>';
+        customTypeGroup.style.display = 'none';
+        roleCheckboxes.forEach(cb => {
+            cb.required = false;
+            cb.checked = false;
+        });
+    }
+}
+
+function formatVisibilityText(roles) {
+    const allRoles = ['guest', 'fan', 'team_member', 'coach', 'admin'];
+    
+    // Если включены все роли
+    if (roles.length === allRoles.length && allRoles.every(role => roles.includes(role))) {
+        return 'Все';
+    }
+    
+    // Если включены все роли кроме гостя
+    const registeredRoles = allRoles.filter(role => role !== 'guest');
+    if (registeredRoles.every(role => roles.includes(role))) {
+        return 'Зарегистрированные пользователи';
+    }
+    
+    // В остальных случаях выводим список ролей
+    const roleLabels = {
+        'guest': 'Гости',
+        'fan': 'Болельщики',
+        'team_member': 'Члены команды',
+        'coach': 'Тренеры',
+        'admin': 'Администраторы'
+    };
+    
+    return roles.map(role => roleLabels[role] || role).join(', ');
+}
+
+// Управление отображением полей даты и времени окончания
+document.getElementById('has_end_date').addEventListener('change', function() {
+    const endDateGroup = document.getElementById('end_date_group');
+    endDateGroup.style.display = this.checked ? 'block' : 'none';
+    
+    if (this.checked) {
+        const endDate = document.getElementById('end_date');
+        const endTime = document.getElementById('end_time');
+        if (!endDate.value) {
+            endDate.value = document.getElementById('start_date').value;
+        }
+        if (!endTime.value) {
+            endTime.value = document.getElementById('start_time').value;
+        }
+    }
+});
+
+// Автоматическое обновление минимальной даты окончания
+document.getElementById('start_date').addEventListener('change', function() {
+    const endDate = document.getElementById('end_date');
+    endDate.min = this.value;
+    if (endDate.value && endDate.value < this.value) {
+        endDate.value = this.value;
+    }
+});
+
+// Обработчик изменения типа события
+document.getElementById('event_type').addEventListener('change', function() {
+    updateEventVisibility(this.value);
+});
+
+// Валидация дат
+document.querySelector('form').addEventListener('submit', function(e) {
+    const hasEndDate = document.getElementById('has_end_date').checked;
+    if (!hasEndDate) return;
+    
+    const startDate = new Date(
+        document.getElementById('start_date').value + ' ' + 
+        document.getElementById('start_time').value
+    );
+    const endDate = new Date(
+        document.getElementById('end_date').value + ' ' + 
+        document.getElementById('end_time').value
+    );
+    
+    if (endDate < startDate) {
+        e.preventDefault();
+        alert('Дата и время окончания не могут быть раньше даты и времени начала');
+    }
+});
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('has_end_date').dispatchEvent(new Event('change'));
+    updateEventVisibility(document.getElementById('event_type').value);
+});
+</script>
+
+<style>
+.event-visibility-info {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.role-checkboxes {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.role-checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+</style>
+
+<?php include '../includes/footer.php'; ?> 

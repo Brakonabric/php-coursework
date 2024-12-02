@@ -523,3 +523,30 @@ form button:hover {
     margin-bottom: 5px;
     color: #666;
 }
+
+/* Стили для событий разных типов */
+.event-training {
+    background-color: #a8e6cf !important; /* Зеленый для тренировок */
+}
+
+.event-competition {
+    background-color: #ffd3b6 !important; /* Оранжевый для соревнований */
+}
+
+.event-meeting {
+    background-color: #dcedc1 !important; /* Светло-зеленый для собраний */
+}
+
+.event-other {
+    background-color: #d4d4d4 !important; /* Серый для прочих событий */
+}
+
+/* Общие стили для событий */
+.event {
+    cursor: pointer;
+    position: relative;
+}
+
+.event:hover {
+    opacity: 0.8;
+}

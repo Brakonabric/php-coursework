@@ -3,7 +3,7 @@
 $roleHierarchy = [
     'guest' => 0,
     'fan' => 1,
-    'player' => 2,
+    'team_member' => 2,
     'coach' => 3,
     'admin' => 4,
 ];

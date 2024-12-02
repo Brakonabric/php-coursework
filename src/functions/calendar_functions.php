@@ -14,34 +14,42 @@ function canAddEvent($role): bool
  */
 function getEvents($conn, $startDate, $endDate, $userRole): array
 {
+    $events = [];
+    
     $sql = "SELECT * FROM events WHERE 
-            (date BETWEEN ? AND ?) OR 
-            (end_date IS NOT NULL AND end_date BETWEEN ? AND ?) OR
-            (date <= ? AND (end_date >= ? OR end_date IS NULL))";
+            (start_date BETWEEN ? AND ?) OR 
+            (end_date BETWEEN ? AND ?) OR
+            (start_date <= ? AND end_date >= ?)
+            ORDER BY start_date ASC";
+            
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ssssss', $startDate, $endDate, $startDate, $endDate, $endDate, $startDate);
+    $stmt->bind_param('ssssss', $startDate, $endDate, $startDate, $endDate, $startDate, $endDate);
     $stmt->execute();
     $result = $stmt->get_result();
-    $events = [];
-
+    
     while ($row = $result->fetch_assoc()) {
-        if (hasAccess($row['access'], $userRole)) {
-            // Если событие многодневное, добавляем его на все дни
-            if (!empty($row['end_date'])) {
-                $currentDate = new DateTime($row['date']);
-                $endDate = new DateTime($row['end_date']);
-                
-                while ($currentDate <= $endDate) {
-                    $dateKey = $currentDate->format('Y-m-d');
-                    $events[$dateKey][] = $row;
-                    $currentDate->modify('+1 day');
+        // Проверяем видимость события для текущей роли
+        $visible_roles = json_decode($row['event_visibility'] ?? '[]', true);
+        if (in_array($userRole, $visible_roles)) {
+            // Получаем даты начала и окончания события
+            $start = new DateTime($row['start_date']);
+            $end = new DateTime($row['end_date']);
+            
+            // Создаем период между датами
+            $interval = new DateInterval('P1D');
+            $dateRange = new DatePeriod($start, $interval, $end->modify('+1 day'));
+            
+            // Добавляем событие на каждый день периода
+            foreach ($dateRange as $date) {
+                $eventDate = $date->format('Y-m-d');
+                if (!isset($events[$eventDate])) {
+                    $events[$eventDate] = [];
                 }
-            } else {
-                $events[$row['date']][] = $row;
+                $events[$eventDate][] = $row;
             }
         }
     }
-
+    
     return $events;
 }
 
@@ -68,14 +76,14 @@ function getEventTypes(): array
 function hasEventTypeAccess($eventType, $userRole): bool
 {
     $typeAccess = [
-        'match' => ['admin', 'coach', 'player', 'fan', 'guest'],
-        'training' => ['admin', 'coach', 'player'],
-        'open_training' => ['admin', 'coach', 'player', 'fan'],
-        'meeting' => ['admin', 'coach', 'player'],
+        'match' => ['admin', 'coach', 'team_member', 'fan', 'guest'],
+        'training' => ['admin', 'coach', 'team_member'],
+        'open_training' => ['admin', 'coach', 'team_member', 'fan'],
+        'meeting' => ['admin', 'coach', 'team_member'],
         'admin_meeting' => ['admin', 'coach'],
-        'masterclass' => ['admin', 'coach', 'player', 'fan', 'guest'],
-        'sports_camp' => ['admin', 'coach', 'player', 'fan', 'guest'],
-        'other' => ['admin', 'coach', 'player', 'fan']
+        'masterclass' => ['admin', 'coach', 'team_member', 'fan', 'guest'],
+        'sports_camp' => ['admin', 'coach', 'team_member', 'fan', 'guest'],
+        'other' => ['admin', 'coach', 'team_member', 'fan']
     ];
 
     return isset($typeAccess[$eventType]) && in_array($userRole, $typeAccess[$eventType]);
@@ -133,16 +141,67 @@ function generateMonth($year, $month): array
 function getMonthsData($currentYear, $currentMonth, $events): array
 {
     $months = [];
+    
+    // От -3 до +3 месяца (всего 7 месяцев)
     for ($i = -3; $i <= 3; $i++) {
-        $monthTimestamp = strtotime("$i months", strtotime("$currentYear-$currentMonth-01"));
-        $year = date('Y', $monthTimestamp);
-        $month = date('m', $monthTimestamp);
+        $timestamp = strtotime("$currentYear-$currentMonth-01 $i months");
+        $year = date('Y', $timestamp);
+        $month = date('m', $timestamp);
+        
+        $firstDay = date('N', strtotime("$year-$month-01")) - 1;
+        $daysInMonth = date('t', strtotime("$year-$month-01"));
+        
+        $calendar = [];
+        
+        // Добавляем дни предыдущего месяца
+        if ($firstDay > 0) {
+            $prevMonth = date('m', strtotime("$year-$month-01 -1 month"));
+            $prevYear = date('Y', strtotime("$year-$month-01 -1 month"));
+            $daysInPrevMonth = date('t', strtotime("$prevYear-$prevMonth-01"));
+            
+            for ($day = $daysInPrevMonth - $firstDay + 1; $day <= $daysInPrevMonth; $day++) {
+                $date = sprintf('%s-%s-%02d', $prevYear, $prevMonth, $day);
+                $calendar[] = [
+                    'day' => $day,
+                    'date' => $date,
+                    'currentMonth' => false
+                ];
+            }
+        }
+        
+        // Добавляем дни текущего месяца
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $date = sprintf('%s-%s-%02d', $year, $month, $day);
+            $calendar[] = [
+                'day' => $day,
+                'date' => $date,
+                'currentMonth' => true
+            ];
+        }
+        
+        // Добавляем дни следующего месяца
+        $remainingDays = 42 - count($calendar); // 6 недель по 7 дней
+        if ($remainingDays > 0) {
+            $nextMonth = date('m', strtotime("$year-$month-01 +1 month"));
+            $nextYear = date('Y', strtotime("$year-$month-01 +1 month"));
+            
+            for ($day = 1; $day <= $remainingDays; $day++) {
+                $date = sprintf('%s-%s-%02d', $nextYear, $nextMonth, $day);
+                $calendar[] = [
+                    'day' => $day,
+                    'date' => $date,
+                    'currentMonth' => false
+                ];
+            }
+        }
+        
         $months[] = [
             'year' => $year,
             'month' => $month,
-            'calendar' => generateMonth($year, $month, $events),
-            'isCurrent' => ($i === 0),
+            'calendar' => $calendar,
+            'isCurrent' => ($i === 0)
         ];
     }
+    
     return $months;
 }

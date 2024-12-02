@@ -32,6 +32,7 @@ if (!isset($_SESSION['user_role'])) {
             <a href="/pages/contact.php">Команда</a>
             <a href="/pages/contact.php">Контакты</a>
             <a href="/pages/calendar.php">Календарь</a>
+            <a href="/pages/gallery.php">Галерея</a>
         </div>
         <div class="auth-links">
             <?php if (isset($_SESSION['user_name'])): ?>

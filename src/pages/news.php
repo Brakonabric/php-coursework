@@ -17,7 +17,7 @@ $total_pages = ceil($total_posts / $posts_per_page);
 // Получение постов для текущей страницы
 $sql = "SELECT n.*, COUNT(c.id) as comments_count 
         FROM news n 
-        LEFT JOIN comments c ON n.id = c.news_id 
+        LEFT JOIN news_comments c ON n.id = c.news_id 
         GROUP BY n.id 
         ORDER BY n.created_at DESC 
         LIMIT ? OFFSET ?";

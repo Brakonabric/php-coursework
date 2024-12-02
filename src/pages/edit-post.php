@@ -4,6 +4,13 @@ $page_title = 'Редактирование новости';
 include '../includes/header.php';
 include '../config.php';
 
+// Определяем директорию для загрузки
+$upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/news/';
+if (!file_exists($upload_dir)) {
+    mkdir($upload_dir, 0777, true);
+    chmod($upload_dir, 0777);
+}
+
 // Проверка прав доступа
 if (!hasAccess('coach', $_SESSION['user_role'])) {
     header('Location: /404.php');

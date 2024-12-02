@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Создаем запись в базе данных со всеми необходимыми полями
-        $sql = "INSERT INTO news (title, content, author_id, image_path_preview) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO news (title, content, user_id, image_path_preview) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssis', $title, $content, $author_id, $preview_image);
         $stmt->execute();
