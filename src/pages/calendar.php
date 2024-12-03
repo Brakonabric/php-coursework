@@ -10,61 +10,9 @@ $userRole = $_SESSION['user_role'] ?? 'guest';
 // Определение текущего месяца и года
 $currentMonth = isset($_GET['month']) ? (int)$_GET['month'] : date('m');
 $currentYear = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
-
-// Получение цветов для типов событий
-$sql = "SELECT id, color FROM event_types";
-$result = $conn->query($sql);
-$eventColors = [];
-while ($row = $result->fetch_assoc()) {
-    $eventColors[$row['id']] = $row['color'];
-}
 ?>
 
-<style>
-.event {
-    position: relative;
-    overflow: hidden;
-}
-
-.event::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.3;
-    z-index: 1;
-}
-
-<?php foreach ($eventColors as $type => $color): ?>
-.event-<?= $type ?>::before {
-    background-color: <?= $color ?>;
-}
-<?php endforeach; ?>
-
-.event:hover::before {
-    opacity: 0.5;
-}
-
-.calendar-grid td {
-    position: relative;
-    height: 40px;
-}
-
-.calendar-grid .current {
-    background-color: #fff;
-}
-
-.calendar-grid .other {
-    background-color: #f5f5f5;
-}
-
-.calendar-grid td span {
-    position: relative;
-    z-index: 2;
-}
-</style>
+<link rel="stylesheet" href="/assets/css/dynamic-styles.php">
 
 <!-- Остальной код календаря -->
 <?php
