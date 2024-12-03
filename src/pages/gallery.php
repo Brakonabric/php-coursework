@@ -58,20 +58,26 @@ $result = $conn->query($query);
     </div>
 
     <div class="gallery-grid">
-        <?php while ($photo = $result->fetch_assoc()): ?>
-        <div class="gallery-item" data-id="<?= $photo['id'] ?>" onclick="openPhoto(<?= $photo['id'] ?>)">
-            <img src="<?= htmlspecialchars($photo['image_path']) ?>" alt="<?= htmlspecialchars($photo['title'] ?? '') ?>">
-            <div class="photo-info">
-                <?php if ($photo['title']): ?>
-                    <div class="photo-title"><?= htmlspecialchars($photo['title']) ?></div>
-                <?php endif; ?>
-                <div class="photo-stats">
-                    <span>❤ <?= $photo['likes_count'] ?></span>
-                    <span>💬 <?= $photo['comments_count'] ?></span>
+        <?php if ($result->num_rows > 0): ?>
+            <?php while ($photo = $result->fetch_assoc()): ?>
+                <div class="gallery-item" data-id="<?= $photo['id'] ?>" onclick="openPhoto(<?= $photo['id'] ?>)">
+                    <img src="<?= htmlspecialchars($photo['image_path']) ?>" alt="<?= htmlspecialchars($photo['title'] ?? '') ?>">
+                    <div class="photo-info">
+                        <?php if ($photo['title']): ?>
+                            <div class="photo-title"><?= htmlspecialchars($photo['title']) ?></div>
+                        <?php endif; ?>
+                        <div class="photo-stats">
+                            <span>❤ <?= $photo['likes_count'] ?></span>
+                            <span>💬 <?= $photo['comments_count'] ?></span>
+                        </div>
+                    </div>
                 </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <div class="no-content">
+                <p>В галерее пока нет фотографий</p>
             </div>
-        </div>
-        <?php endwhile; ?>
+        <?php endif; ?>
     </div>
 
     <?php if ($total_pages > 1): ?>

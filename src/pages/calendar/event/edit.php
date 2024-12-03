@@ -43,6 +43,31 @@ while ($row = $result->fetch_assoc()) {
     $event_access[$row['id']] = json_decode($row['visible_roles'], true);
 }
 
+// Обработка удаления события
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_event'])) {
+    try {
+        // Начинаем транзакцию
+        $conn->begin_transaction();
+        
+        // Удаляем событие
+        $sql = "DELETE FROM events WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $event_id);
+        
+        if ($stmt->execute()) {
+            $conn->commit();
+            ob_end_clean();
+            header('Location: /pages/calendar.php');
+            exit();
+        } else {
+            throw new Exception("Ошибка при удалении события");
+        }
+    } catch (Exception $e) {
+        $conn->rollback();
+        $error = "Ошибка: " . $e->getMessage();
+    }
+}
+
 // Обработка отправки формы
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -198,8 +223,31 @@ $has_end_date = $event['start_date'] !== $event['end_date'];
                 <a href="/pages/calendar.php" class="btn btn-secondary">Отмена</a>
             </div>
         </form>
+
+        <!-- Форма удаления события -->
+        <form method="POST" class="delete-event-form" onsubmit="return confirm('Вы уверены, что хотите удалить это событие?');">
+            <button type="submit" name="delete_event" class="btn btn-danger">Удалить событие</button>
+        </form>
     </div>
 </main>
+
+<style>
+/* Добавляем стили для формы удаления */
+.delete-event-form {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+</style>
 
 <script>
 // Функция для отображения видимости события

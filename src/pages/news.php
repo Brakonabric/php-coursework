@@ -14,12 +14,22 @@ $total_result = $conn->query($total_posts_query);
 $total_posts = $total_result->fetch_assoc()['count'];
 $total_pages = ceil($total_posts / $posts_per_page);
 
+// Сортировка
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'date_desc';
+
+// Определение порядка сортировки
+$order_by = match($sort) {
+    'date_asc' => 'n.created_at ASC',
+    'comments' => 'comments_count DESC',
+    default => 'n.created_at DESC'
+};
+
 // Получение постов для текущей страницы
 $sql = "SELECT n.*, COUNT(c.id) as comments_count 
         FROM news n 
         LEFT JOIN news_comments c ON n.id = c.news_id 
         GROUP BY n.id 
-        ORDER BY n.created_at DESC 
+        ORDER BY {$order_by} 
         LIMIT ? OFFSET ?";
 
 $stmt = $conn->prepare($sql);
@@ -37,24 +47,38 @@ $result = $stmt->get_result();
         </div>
     <?php endif; ?>
     
-    <div class="news-grid">
-        <?php while ($post = $result->fetch_assoc()): ?>
-            <article class="news-card">
-                <a href="/pages/news/post.php?id=<?= $post['id'] ?>">
-                    <?php if ($post['image_path_preview']): ?>
-                        <img src="<?= htmlspecialchars($post['image_path_preview']) ?>" alt="Превью новости">
-                    <?php endif; ?>
-                    <div class="news-content">
-                        <h2><?= htmlspecialchars($post['title']) ?></h2>
-                        <div class="news-meta">
-                            <span class="date"><?= date('d.m.Y', strtotime($post['created_at'])) ?></span>
-                            <span class="comments">Комментарии: <?= $post['comments_count'] ?></span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-        <?php endwhile; ?>
+    <div class="news-filters">
+        <select onchange="window.location.href='?sort=' + this.value">
+            <option value="date_desc" <?= $sort === 'date_desc' ? 'selected' : '' ?>>Сначала новые</option>
+            <option value="date_asc" <?= $sort === 'date_asc' ? 'selected' : '' ?>>Сначала старые</option>
+            <option value="comments" <?= $sort === 'comments' ? 'selected' : '' ?>>По комментариям</option>
+        </select>
     </div>
+    
+    <?php if ($result->num_rows > 0): ?>
+        <div class="news-grid">
+            <?php while ($post = $result->fetch_assoc()): ?>
+                <article class="news-card">
+                    <a href="/pages/news/post.php?id=<?= $post['id'] ?>">
+                        <?php if ($post['image_path_preview']): ?>
+                            <img src="<?= htmlspecialchars($post['image_path_preview']) ?>" alt="Превью новости">
+                        <?php endif; ?>
+                        <div class="news-content">
+                            <h2><?= htmlspecialchars($post['title']) ?></h2>
+                            <div class="news-meta">
+                                <span class="date"><?= date('d.m.Y', strtotime($post['created_at'])) ?></span>
+                                <span class="comments">Комментарии: <?= $post['comments_count'] ?></span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            <?php endwhile; ?>
+        </div>
+    <?php else: ?>
+        <div class="no-content">
+            <p>Новостей пока нет</p>
+        </div>
+    <?php endif; ?>
 
     <?php if ($total_pages > 1): ?>
         <div class="pagination">

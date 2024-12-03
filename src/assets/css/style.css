@@ -550,3 +550,33 @@ form button:hover {
 .event:hover {
     opacity: 0.8;
 }
+
+.news-filters {
+    margin: 20px 0;
+}
+
+.news-filters select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.news-filters select:hover {
+    border-color: #999;
+}
+
+.no-content {
+    text-align: center;
+    padding: 40px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.no-content p {
+    color: #666;
+    font-size: 1.1em;
+    margin: 0;
+}
