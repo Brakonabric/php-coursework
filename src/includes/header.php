@@ -19,6 +19,8 @@ if (!isset($_SESSION['user_role'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/theme-blue.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title><?= isset($page_title) ? htmlspecialchars($page_title) : 'Nonames Team'; ?></title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">

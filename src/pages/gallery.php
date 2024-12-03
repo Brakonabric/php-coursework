@@ -128,6 +128,10 @@ document.querySelectorAll('.gallery-item').forEach(item => {
     photoIds.push(item.dataset.id);
 });
 
+function closeModal() {
+    document.getElementById('photoModal').style.display = 'none';
+}
+
 function openPhoto(id) {
     currentPhotoId = id;
     fetch(`/pages/gallery/actions/get_photo.php?id=${id}`)
@@ -142,7 +146,7 @@ function openPhoto(id) {
             // Загрузка комментариев
             loadComments(id);
             
-            document.getElementById('photoModal').style.display = 'block';
+            document.getElementById('photoModal').style.display = 'flex';
         });
 }
 
@@ -209,9 +213,26 @@ function submitComment(event) {
     });
 }
 
-// Закрытие модального окна
-document.querySelector('.close').onclick = function() {
-    document.getElementById('photoModal').style.display = 'none';
+// Обработчики закрытия модального окна
+document.querySelector('.close').onclick = closeModal;
+
+// Закрытие по клику вне модального окна
+document.getElementById('photoModal').onclick = function(event) {
+    if (event.target === this) {
+        closeModal();
+    }
+}
+
+// Закрытие по клавише Escape
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// Предотвращение закрытия при клике на контент модального окна
+document.querySelector('.modal-content').onclick = function(event) {
+    event.stopPropagation();
 }
 </script>
 

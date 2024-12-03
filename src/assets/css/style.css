@@ -194,6 +194,8 @@ form button:hover {
     height: 100%;
     background: rgba(0, 0, 0, 0.9);
     z-index: 1000;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
@@ -201,16 +203,19 @@ form button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    padding: 20px;
+    max-width: 90%;
+    max-height: 90vh;
+    margin: 20px;
 }
 
 .photo-container {
     display: flex;
-    max-width: 90%;
+    max-width: 100%;
     max-height: 90vh;
     background: white;
     border-radius: 8px;
+    overflow: hidden;
+    position: relative;
 }
 
 .photo-container img {
@@ -229,26 +234,47 @@ form button:hover {
 }
 
 .nav-btn {
-    position: absolute;
+    position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
     border: none;
     padding: 15px;
     cursor: pointer;
     border-radius: 50%;
+    z-index: 1010;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
 }
 
 .prev { left: 20px; }
 .next { right: 20px; }
 
 .close {
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 20px;
     color: white;
     font-size: 30px;
     cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1010;
+    transition: all 0.3s ease;
+}
+
+.close:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
 }
 
 /* Стили для пагинации */
@@ -1084,6 +1110,21 @@ form button:hover {
         margin-right: 0;
         margin-bottom: 15px;
         align-self: flex-start;
+    }
+
+    .photo-container {
+        flex-direction: column;
+    }
+
+    .photo-container img {
+        max-width: 100%;
+        max-height: 60vh;
+    }
+
+    .photo-details {
+        width: 100%;
+        max-height: 30vh;
+        overflow-y: auto;
     }
 }
 

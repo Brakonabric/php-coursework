@@ -1,0 +1,184 @@
+/* CSS переменные (Custom Properties) */
+:root {
+    /* Основные цвета */
+    --primary-color: #1a73e8;
+    --primary-dark: #1557b0;
+    --primary-light: #e8f0fe;
+    
+    /* Дополнительные цвета */
+    --secondary-color: #34a853;
+    --warning-color: #fbbc04;
+    --error-color: #ea4335;
+    
+    /* Размеры */
+    --spacing-small: 8px;
+    --spacing-medium: 16px;
+    --spacing-large: 24px;
+    
+    /* Тени */
+    --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
+    
+    /* Скорость анимации */
+    --transition-speed: 0.3s;
+}
+
+/* Пример использования переменных и классов-модификаторов */
+.btn {
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: 4px;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn--primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn--secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Пример псевдоклассов */
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Пример комбинаторов */
+.card > .card__title {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-small);
+}
+
+.card + .card {
+    margin-top: var(--spacing-medium);
+}
+
+/* Пример медиа-запросов */
+@media (max-width: 768px) {
+    :root {
+        --spacing-large: 16px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Пример CSS Grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-medium);
+}
+
+/* Пример CSS Flexbox */
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-small);
+}
+
+/* Пример анимации */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animate-slide {
+    animation: slideIn var(--transition-speed) ease-out;
+}
+
+/* Пример использования атрибутов */
+[data-theme="dark"] {
+    --primary-light: #1f1f1f;
+    --primary-color: #4285f4;
+}
+
+/* Пример BEM методологии */
+.block {
+    padding: var(--spacing-medium);
+}
+
+.block__element {
+    margin: var(--spacing-small);
+}
+
+.block__element--modifier {
+    background-color: var(--primary-light);
+}
+
+/* Основные стили темы */
+body {
+    background-color: var(--primary-light);
+}
+
+.nav-bar {
+    background-color: var(--primary-color);
+    border-bottom: none;
+    color: white;
+    box-shadow: var(--shadow-small);
+}
+
+.nav-bar a {
+    color: white;
+    transition: opacity var(--transition-speed);
+}
+
+.nav-bar a:hover {
+    opacity: 0.8;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+}
+
+.event-date {
+    background: var(--primary-color);
+}
+
+.event-type {
+    color: var(--primary-color);
+    background: rgba(26, 115, 232, 0.1);
+}
+
+.event-location i, 
+.event-time i,
+.contact-item i,
+.material-icons {
+    color: var(--primary-color);
+}
+
+.read-more {
+    color: var(--primary-color);
+    transition: color var(--transition-speed);
+}
+
+.read-more:hover {
+    color: var(--primary-dark);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-dark);
+    transition: all var(--transition-speed);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+} 
