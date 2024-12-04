@@ -32,7 +32,7 @@ if (!isset($_SESSION['user_role'])) {
         <div class="navigation">
             <a href="/index.php">Главная</a>
             <a href="/pages/news.php">Новости</a>
-            <a href="/pages/contact.php">Команда</a>
+            <a href="/pages/team.php">Команда</a>
             <a href="/pages/contact.php">Контакты</a>
             <a href="/pages/calendar.php">Календарь</a>
             <a href="/pages/gallery.php">Галерея</a>

@@ -109,6 +109,46 @@ CREATE TABLE events (
     FOREIGN KEY (created_by) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Создание таблицы игроков
+CREATE TABLE IF NOT EXISTS players (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    number INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    position ENUM('GK', 'DF', 'MF', 'FW') NOT NULL,
+    height INT NOT NULL,
+    weight INT NOT NULL,
+    birth_date DATE NOT NULL,
+    accuracy INT NOT NULL,
+    photo_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_number (number)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Создание таблицы голов
+CREATE TABLE IF NOT EXISTS player_goals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    player_id INT NOT NULL,
+    scored_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Создание таблицы штрафов
+CREATE TABLE IF NOT EXISTS player_penalties (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    player_id INT NOT NULL,
+    received_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Добавление тестовых данных для игроков
+INSERT INTO players (number, name, position, height, weight, birth_date, accuracy) VALUES
+(1, 'Иван Петров', 'GK', 188, 82, '1995-03-15', 85),
+(7, 'Алексей Смирнов', 'FW', 180, 75, '1998-07-22', 92),
+(4, 'Михаил Иванов', 'DF', 185, 78, '1997-11-30', 88),
+(10, 'Сергей Козлов', 'MF', 175, 70, '1999-05-18', 90);
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- Добавление типов событий
 INSERT INTO event_types (id, label, default_title, default_description, visible_roles, color) VALUES 
 ('public_event', 'Publisks pasākums', 'Jauns pasākums', 'Pasākuma apraksts', 
@@ -137,5 +177,3 @@ INSERT INTO event_types (id, label, default_title, default_description, visible_
 
 ('tournament', 'Turnīrs', 'Turnīrs', 'Sporta turnīrs', 
 '["guest", "fan", "team_member", "coach", "admin"]', '#ffc6ff');
-
-SET FOREIGN_KEY_CHECKS = 1; 
