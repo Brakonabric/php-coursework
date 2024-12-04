@@ -1,4 +1,4 @@
-/src/uploads/news/*
-/src/uploads/gallery/*
-/src/uploads/players/*
+/src/assets/images/uploads/news/*
+/src/assets/images/uploads/gallery/*
+/src/assets/images/uploads/players/*
 .idea/

@@ -5,7 +5,7 @@ include '../../../includes/header.php';
 include '../../../config.php';
 
 // Определяем директорию для загрузки
-$upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/news/';
+$upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/uploads/news/';
 if (!file_exists($upload_dir)) {
     mkdir($upload_dir, 0777, true);
     chmod($upload_dir, 0777);
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Обработка нового превью изображения
         if (isset($_FILES['preview_image']) && $_FILES['preview_image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/news/';
+            $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/uploads/news/';
             $preview_image = processImage($_FILES['preview_image'], $upload_dir, $post_id . '_preview');
             
             if ($preview_image) {
@@ -123,7 +123,7 @@ function processImage($file, $upload_dir, $prefix) {
     $filepath = $upload_dir . $filename;
     
     if (move_uploaded_file($file['tmp_name'], $filepath)) {
-        return '/uploads/news/' . $filename;
+        return '/assets/images/uploads/news/' . $filename;
     }
     
     return false;

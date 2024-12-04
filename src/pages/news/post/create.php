@@ -13,7 +13,7 @@ if (!hasAccess('coach', $_SESSION['user_role'])) {
 }
 
 // Определяем директорию для загрузки
-$upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/news/';
+$upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/uploads/news/';
 if (!file_exists($upload_dir)) {
     mkdir($upload_dir, 0777, true);
     chmod($upload_dir, 0777);
@@ -131,7 +131,7 @@ function processImage($file, $upload_dir, $prefix) {
         throw new Exception("Ошибка при сохранении файла");
     }
     
-    return '/uploads/news/' . $filename;
+    return '/assets/images/uploads/news/' . $filename;
 }
 ?>
 

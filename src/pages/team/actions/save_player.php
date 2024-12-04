@@ -38,7 +38,7 @@ try {
     error_log("POST data: " . print_r($_POST, true));
     error_log("FILES data: " . print_r($_FILES, true));
 
-    // Проверяем наличие обязательных полей
+    // Проверяем наличие обязате��ьных полей
     $required_fields = ['number', 'name', 'position', 'height', 'weight', 'birth_date', 'accuracy'];
     foreach ($required_fields as $field) {
         if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
@@ -123,7 +123,7 @@ try {
             $stmt->bind_param('i', $player_id);
             for ($i = 0; $i < $goals; $i++) {
                 if (!$stmt->execute()) {
-                    throw new Exception("Ошибка при сохранении голов");
+                    throw new Exception("О��ибка при сохранении голов");
                 }
             }
         }
@@ -154,7 +154,7 @@ try {
             }
 
             // Создаем директорию, если её нет
-            $upload_dir = __DIR__ . '/../../../uploads/players';
+            $upload_dir = __DIR__ . '/../../../assets/images/uploads/players';
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
@@ -167,7 +167,7 @@ try {
             }
 
             // Обновляем путь к фото в базе
-            $photo_url = "/uploads/players/{$photo_name}";
+            $photo_url = "/assets/images/uploads/players/{$photo_name}";
             $stmt = $conn->prepare("UPDATE players SET photo_url = ? WHERE id = ?");
             $stmt->bind_param('si', $photo_url, $player_id);
             
