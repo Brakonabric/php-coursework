@@ -1,6 +1,5 @@
 main .section-a {
     background-color: var(--section-a-bg-color);
-    border-radius: 16px;
     padding: 8px 24px;
     margin: 8px auto 4px auto;
     max-width: 70%;
@@ -10,7 +9,6 @@ main .section-a {
 
 main .section-b {
     background-color: var(--section-b-bg-color);
-    border-radius: 16px;
     padding: 8px 24px;
     margin: 8px auto 4px auto;
     max-width: 70%;
@@ -27,7 +25,6 @@ main section h1, h2, h3 {
 .welcome-banner {
     background: linear-gradient(135deg, #284877 0%, #335299 100%);
     color: var(--primary-light);
-    border-radius: 10px;
     text-align: center;
     background-size: cover;
 }
@@ -125,7 +122,7 @@ section .section-header a:hover::after {
 
 .news-card {
     position: relative;
-    border-radius: 16px;
+    border-radius: 10px;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -197,10 +194,83 @@ section .section-header a:hover::after {
 }
 
 .event-card {
+    position: relative;
     background-color: var(--primary-bg-color);
-    border-radius: 16px;
+    border-radius: 10px;
     padding: 16px;
     margin: 0;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-header span:not(.material-icons) {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.event-header .material-icons {
+    color: var(--primary-dark);
+}
+
+.event-header .event-type {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary-dark);
+}
+
+.event-header .event-date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary-dark);
+}
+
+.event-title {
+    font-size: 20px;
+    text-align: center;
+    margin: 4px;
+    color: var(--primary-dark);
+}
+
+.event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.event-details p {
+    position: relative;
+    display: flex;
+    margin: 0;
+    padding: 0; 
+    gap: 4px;
+    align-items: center;
+    color: var(--primary-dark);
+}
+
+.event-details span:not(.material-icons) {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.event-details .material-icons {
+    color: var(--primary-dark);
+}
+
+.event-details .event-description {
+    white-space: wrap;
 }
 
 .gallery-grid {
@@ -214,7 +284,7 @@ section .section-header a:hover::after {
 .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -223,7 +293,7 @@ section .section-header a:hover::after {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 16px;
+    border-radius: 10px;
     transition: transform 0.3s ease;
 }
 
@@ -243,13 +313,19 @@ section .section-header a:hover::after {
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 64px;
+    gap: 25%;
     padding: 8px;
     background: rgba(0, 0, 0, 0.5);
     color: var(--primary-light);
     text-align: center;
     font-size: 16px;
     font-weight: 600;
+}
+
+.photo-overlay span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .gallery-grid .no-content {
@@ -260,4 +336,3 @@ section .section-header a:hover::after {
     padding: 0;
     margin: 0;
 }
-

@@ -77,23 +77,6 @@ function getEventTypeLabel($type) {
     return $type;
 }
 
-function getMonthName($month) {
-    $months = [
-        'Jan' => 'Jan',
-        'Feb' => 'Feb',
-        'Mar' => 'Mar',
-        'Apr' => 'Apr',
-        'May' => 'Mai',
-        'Jun' => 'Jūn',
-        'Jul' => 'Jūl',
-        'Aug' => 'Aug',
-        'Sep' => 'Sep',
-        'Oct' => 'Okt',
-        'Nov' => 'Nov',
-        'Dec' => 'Dec'
-    ];
-    return $months[$month] ?? $month;
-}
 ?>
 
 <main class="home-page">
@@ -131,7 +114,7 @@ function getMonthName($month) {
                                 <span class="date"><?= date('d.m.Y', strtotime($news['created_at'])) ?></span>
                             </div>
                         </div>
-                    </article>
+                    </a>
                 <?php endwhile; ?>
             <?php else: ?>
                 <p class="no-content">Pagaidām nav ziņu</p>
@@ -147,17 +130,19 @@ function getMonthName($month) {
         <div class="events-list">
             <?php if ($events_result && $events_result->num_rows > 0): ?>
                 <?php while ($event = $events_result->fetch_assoc()): ?>
-                    <div class="event-card">
-                        <div class="event-date">
-                            <span class="day"><?= date('d', strtotime($event['start_date'])) ?></span>
-                            <span class="month"><?= getMonthName(date('M', strtotime($event['start_date']))) ?></span>
-                        </div>
-                        <div class="event-details">
+                    <a href="/pages/calendar.php" class="event-card">
+                        <div class="event-header">
                             <div class="event-type">
                                 <span class="material-icons">event</span>
-                                <?= getEventTypeLabel($event['event_type']) ?>
+                                <span><?= getEventTypeLabel($event['event_type']) ?></span>
                             </div>
-                            <h3><?= htmlspecialchars($event['title']) ?></h3>
+                            <div class="event-date">
+                                <span class="day"><?= date('d', strtotime($event['start_date'])) ?></span>
+                                <span class="month"><?= date('M', strtotime($event['start_date'])) ?></span>
+                            </div>
+                        </div>
+                        <h3 class="event-title"><?= htmlspecialchars($event['title']) ?></h3>
+                        <div class="event-details">
                             <?php if ($event['location']): ?>
                                 <p class="event-location">
                                     <span class="material-icons">place</span>
@@ -169,10 +154,13 @@ function getMonthName($month) {
                                 <?= date('H:i', strtotime($event['start_date'])) ?>
                             </p>
                             <?php if ($event['description']): ?>
-                                <p class="event-description"><?= htmlspecialchars($event['description']) ?></p>
+                                <p class="event-description">
+                                    <span class="material-icons">description</span>
+                                    <?= htmlspecialchars($event['description']) ?>
+                                </p>
                             <?php endif; ?>
                         </div>
-                    </div>
+                    </a>
                 <?php endwhile; ?>
             <?php else: ?>
                 <div class="no-content">
@@ -194,8 +182,8 @@ function getMonthName($month) {
                     <div class="gallery-item">
                         <img src="<?= htmlspecialchars($photo['image_path']) ?>" alt="Foto no galerijas">
                         <div class="photo-overlay">
-                            <span class="likes-count">❤ <?= $photo['likes_count'] ?></span>
-                            <span class="likes-count">🗨️ <?= $photo['comments_count'] ?></span>
+                            <span class="likes-count"><span class="material-icons">favorite</span> <?= $photo['likes_count'] ?></span>
+                            <span class="likes-count"><span class="material-icons">comment</span> <?= $photo['comments_count'] ?></span>
                         </div>
                     </div>
                 <?php endwhile; ?>

@@ -7,7 +7,9 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) DEFAULT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('guest', 'fan', 'team_member', 'coach', 'admin') DEFAULT 'fan',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
