@@ -20,23 +20,28 @@ setlocale(LC_TIME, 'lv_LV.UTF-8');
     <link rel="stylesheet" href="/assets/css/variables.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <?php 
-    $current_page = basename($_SERVER['PHP_SELF'], '.php');
-    $css_file = match($current_page) {
-        'index' => '/assets/css/pages/home.css',
-        'news' => '/assets/css/pages/news.css',
-        'team' => '/assets/css/pages/team.css',
-        'contact' => '/assets/css/pages/contact.css',
-        'calendar' => '/assets/css/pages/calendar.css',
-        'gallery' => '/assets/css/pages/gallery.css',
-        'settings' => '/assets/css/pages/settings.css',
-        default => null
-    };
-    
-    if ($css_file) {
-        echo '<link rel="stylesheet" href="' . $css_file . '">';
+    if (isset($custom_css)) {
+        echo '<link rel="stylesheet" href="/assets/css/pages/' . $custom_css . '">';
+    } else {
+        $current_page = basename($_SERVER['PHP_SELF'], '.php');
+        $css_file = match($current_page) {
+            'index' => '/assets/css/pages/home.css',
+            'news' => '/assets/css/pages/news.css',
+            'team' => '/assets/css/pages/team.css',
+            'contact' => '/assets/css/pages/contact.css',
+            'calendar' => '/assets/css/pages/calendar.css',
+            'gallery' => '/assets/css/pages/gallery.css',
+            'settings' => '/assets/css/pages/settings.css',
+            default => null
+        };
+        
+        if ($css_file) {
+            echo '<link rel="stylesheet" href="' . $css_file . '">';
+        }
     }
     ?>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/assets/js/validation.js"></script>
     <title><?= isset($page_title) ? htmlspecialchars($page_title) : 'Nonames Team'; ?></title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>

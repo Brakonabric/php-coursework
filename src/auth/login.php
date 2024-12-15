@@ -3,7 +3,8 @@
 ob_start();
 
 session_start();
-$page_title = 'Login';
+$page_title = 'Ieiet';
+$custom_css = 'settings.css';
 include '../includes/header.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,39 +30,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: /index.php');
         exit();
     } else {
-        $error = "Неверный email или пароль";
+        $error = "Nepareizs e-pasts vai parole";
     }
 }
 ?>
 
 <main>
-    <div class="auth-container">
-        <h1>Вход в систему</h1>
+    <div class="settings-container">
+        <h1>Ieiet sistēmā</h1>
+        
+        <div id="notifications"></div>
         
         <?php if (isset($error)): ?>
-            <div class="error-message"><?= htmlspecialchars($error) ?></div>
+            <div class="alert alert-error">
+                <span class="material-icons">error</span>
+                <?= htmlspecialchars($error) ?>
+            </div>
         <?php endif; ?>
         
-        <form method="POST" class="auth-form">
+        <form method="POST" class="settings-form" id="loginForm" novalidate>
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email">E-pasts</label>
+                <input type="email" id="email" name="email" 
+                    required
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                    data-error="Lūdzu, ievadiet derīgu e-pasta adresi">
+                <div class="error-message"></div>
             </div>
             
             <div class="form-group">
-                <label for="password">Пароль:</label>
+                <label for="password">Parole</label>
                 <input type="password" id="password" name="password" required>
+                <div class="error-message"></div>
             </div>
             
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Войти</button>
+                <button type="submit" class="btn btn-success">
+                    <span class="material-icons">login</span>
+                    <span class="button-text">Ieiet</span>
+                </button>
+                <div class="auth-links">
+                    <p>Nav konta? <a href="/auth/register.php">Reģistrēties</a></p>
+                </div>
             </div>
         </form>
-        
-        <div class="auth-links">
-            <p>Еще нет аккаунта? <a href="/auth/register.php">Зарегистрироваться</a></p>
-        </div>
     </div>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    initLoginFormValidation(form);
+});
+</script>
 
 <?php include '../includes/footer.php'; ?>

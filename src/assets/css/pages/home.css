@@ -2,7 +2,7 @@ main .section-a {
     background-color: var(--section-a-bg-color);
     padding: 8px 24px;
     margin: 8px auto 4px auto;
-    max-width: 70%;
+    width: 70%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
                 0 1px 3px rgba(0, 0, 0, 0.06);
 }
@@ -11,7 +11,7 @@ main .section-b {
     background-color: var(--section-b-bg-color);
     padding: 8px 24px;
     margin: 8px auto 4px auto;
-    max-width: 70%;
+    width: 70%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
                 0 1px 3px rgba(0, 0, 0, 0.06);
 }

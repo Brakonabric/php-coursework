@@ -104,8 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="name" name="name" 
                     value="<?= htmlspecialchars($user['name'] ?? '') ?>" 
                     required readonly
-                    pattern="[A-Za-zĀ-ž\s]{2,}"
-                    data-error="Vārdam jābūt vismaz 2 rakstzīmes garam un jāsatur tikai burti">
+                    pattern="^[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]{2,}$"
+                    data-error="Vārds nedrīkst saturēt ciparus un speciālos simbolus">
                 <div class="error-message"></div>
             </div>
 
@@ -114,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="surname" name="surname" 
                     value="<?= htmlspecialchars($user['surname'] ?? '') ?>" 
                     required readonly
-                    pattern="[A-Za-zĀ-ž\s]{2,}"
-                    data-error="Uzvārdam jābūt vismaz 2 rakstzīmes garam un jāsatur tikai burti">
+                    pattern="^[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]{2,}$"
+                    data-error="Uzvārds nedrīkst saturēt ciparus un speciālos simbolus">
                 <div class="error-message"></div>
             </div>
 
@@ -124,7 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="email" id="email" name="email" 
                     value="<?= htmlspecialchars($user['email'] ?? '') ?>" 
                     required readonly
-                    data-error="Lūdzu, ievadiet derīgu e-pasta adresi">
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                    data-error="Lūdzu, ievadiet derīgu e-pasta adresi (piemēram: lietotajs@domena.com)">
                 <div class="error-message"></div>
             </div>
 
@@ -150,8 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="new_password">Jaunā parole</label>
                     <input type="password" id="new_password" name="new_password" 
                         readonly
-                        pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-                        data-error="Parolei jābūt vismaz 8 rakstzīmes garai un jāsatur vismaz viens cipars">
+                        pattern="^(?=.*[a-zA-Z])(?=.*\d).{8,}$"
+                        data-error="Parolei jābūt vismaz 8 rakstzīmes garai un jāsatur vismaz viens cipars un viens burts">
                     <div class="error-message"></div>
                 </div>
 
@@ -183,77 +184,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const editButton = document.getElementById('editButton');
     const saveButton = document.getElementById('saveButton');
     const inputs = form.querySelectorAll('input');
-    const notifications = document.getElementById('notifications');
     let isEditing = false;
     let originalValues = {};
 
     // Сохраняем оригинальные значения
     inputs.forEach(input => {
         originalValues[input.name] = input.value;
-    });
-
-    // Функция для показа уведомления
-    function showNotification(message, type = 'error') {
-        const notification = document.createElement('div');
-        notification.className = `alert alert-${type}`;
-        notification.innerHTML = `
-            <span class="material-icons">${type === 'success' ? 'check_circle' : 'error'}</span>
-            ${message}
-        `;
-        notifications.appendChild(notification);
-        
-        // Удаляем уведомление через 5 секунд
-        setTimeout(() => {
-            notification.remove();
-        }, 5000);
-    }
-
-    // Функция валидации поля
-    function validateField(input) {
-        const errorDiv = input.nextElementSibling;
-        let isValid = true;
-
-        // Очищаем предыдущую ошибку
-        errorDiv.textContent = '';
-        input.classList.remove('invalid');
-
-        if (input.hasAttribute('required') && !input.value) {
-            errorDiv.textContent = 'Šis lauks ir obligāts';
-            input.classList.add('invalid');
-            isValid = false;
-        } else if (input.pattern && input.value) {
-            const regex = new RegExp(input.pattern);
-            if (!regex.test(input.value)) {
-                errorDiv.textContent = input.dataset.error;
-                input.classList.add('invalid');
-                isValid = false;
-            }
-        } else if (input.type === 'email' && input.value) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(input.value)) {
-                errorDiv.textContent = input.dataset.error;
-                input.classList.add('invalid');
-                isValid = false;
-            }
-        } else if (input.id === 'confirm_password' && input.value) {
-            const newPassword = document.getElementById('new_password');
-            if (input.value !== newPassword.value) {
-                errorDiv.textContent = input.dataset.error;
-                input.classList.add('invalid');
-                isValid = false;
-            }
-        }
-
-        return isValid;
-    }
-
-    // Валидация при вводе
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            if (!input.readOnly) {
-                validateField(input);
-            }
-        });
     });
 
     editButton.addEventListener('click', function() {
@@ -272,52 +208,14 @@ document.addEventListener('DOMContentLoaded', function() {
             saveButton.style.display = 'none';
             inputs.forEach(input => {
                 input.readOnly = true;
-                if (originalValues[input.name]) {
-                    input.value = originalValues[input.name];
-                } else {
-                    input.value = '';
-                }
-                // Очищаем ошибки
-                input.classList.remove('invalid');
-                const errorDiv = input.nextElementSibling;
-                if (errorDiv && errorDiv.className === 'error-message') {
-                    errorDiv.textContent = '';
-                }
+                input.value = originalValues[input.name] || '';
+                clearFieldError(input);
             });
         }
     });
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        let isValid = true;
-        const activeInputs = Array.from(inputs).filter(input => !input.readOnly);
-
-        activeInputs.forEach(input => {
-            if (!validateField(input)) {
-                isValid = false;
-            }
-        });
-
-        const newPassword = document.getElementById('new_password');
-        const confirmPassword = document.getElementById('confirm_password');
-        const currentPassword = document.getElementById('current_password');
-
-        if (newPassword.value || confirmPassword.value || currentPassword.value) {
-            if (!currentPassword.value) {
-                showNotification('Lai mainītu paroli, jāievada pašreizējā parole');
-                isValid = false;
-            }
-            if (newPassword.value !== confirmPassword.value) {
-                showNotification('Jaunās paroles nesakrīt');
-                isValid = false;
-            }
-        }
-
-        if (isValid) {
-            this.submit();
-        }
-    });
+    // Инициализация валидации формы
+    initFormValidation(form);
 });
 </script>
 
