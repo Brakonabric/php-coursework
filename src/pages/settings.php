@@ -13,14 +13,12 @@ $user_id = $_SESSION['user_id'];
 $success_message = '';
 $error_message = '';
 
-// Получаем данные пользователя
 $stmt = $conn->prepare("SELECT name, surname, email, phone FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// Обработка формы
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
     $surname = trim($_POST['surname']);
@@ -31,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_password = $_POST['confirm_password'];
 
     try {
-        // Проверяем текущий пароль только если пользователь хочет изменить пароль
         if (!empty($new_password)) {
             $pwd_stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
             $pwd_stmt->bind_param("i", $user_id);
@@ -52,15 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Начинаем транзакцию
         $conn->begin_transaction();
 
-        // Обновляем основные данные
         $update_stmt = $conn->prepare("UPDATE users SET name = ?, surname = ?, email = ?, phone = ? WHERE id = ?");
         $update_stmt->bind_param("ssssi", $name, $surname, $email, $phone, $user_id);
         $update_stmt->execute();
 
-        // Обновляем пароль, если указан новый
         if (!empty($new_password)) {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
             $pwd_update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
@@ -72,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_name'] = $name;
         $success_message = "Iestatījumi veiksmīgi atjaunināti";
         
-        // Обновляем данные пользователя для отображения в форме
         $user['name'] = $name;
         $user['surname'] = $surname;
         $user['email'] = $email;
@@ -146,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="password-section">
-                <h2>Mainīt paroli</h2>
+                <h1>Mainīt paroli</h1>
                 <div class="form-group">
                     <label for="current_password">Pašreizējā parole</label>
                     <input type="password" id="current_password" name="current_password" readonly>
@@ -175,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="material-icons">edit</span>
                     <span class="button-text">Rediģēt</span>
                 </button>
-                <button type="submit" class="btn btn-primary" id="saveButton" style="display: none;">
+                <button type="submit" class="btn btn-success" id="saveButton" style="display: none;">
                     <span class="material-icons">save</span>
                     <span class="button-text">Saglabāt izmaiņas</span>
                 </button>
@@ -267,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
         isEditing = !isEditing;
         
         if (isEditing) {
-            // Включаем режим редактирования
             editButton.innerHTML = '<span class="material-icons">close</span><span class="button-text">Atcelt</span>';
             editButton.classList.add('btn-danger');
             saveButton.style.display = 'flex';
@@ -275,7 +267,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.readOnly = false;
             });
         } else {
-            // Отменяем редактирование и возвращаем оригинальные значения
             editButton.innerHTML = '<span class="material-icons">edit</span><span class="button-text">Rediģēt</span>';
             editButton.classList.remove('btn-danger');
             saveButton.style.display = 'none';
@@ -296,21 +287,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Обработка отправки формы
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
         let isValid = true;
         const activeInputs = Array.from(inputs).filter(input => !input.readOnly);
-        
-        // Валидируем только активные поля
+
         activeInputs.forEach(input => {
             if (!validateField(input)) {
                 isValid = false;
             }
         });
 
-        // Проверяем пароли
         const newPassword = document.getElementById('new_password');
         const confirmPassword = document.getElementById('confirm_password');
         const currentPassword = document.getElementById('current_password');
