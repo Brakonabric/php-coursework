@@ -1,2 +1,217 @@
-/* Стили для страницы новостей */
-/* Все специфичные стили для страницы новостей будут добавлены сюда */ 
+.news-container {
+    background-color: var(--section-a-bg-color);
+    padding: 16px 32px;
+    margin: 8px auto;
+    width: 70%;
+    min-height: calc(100vh - 164px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.news-container h1 {
+    color: var(--primary-light);
+    text-align: left;
+    font-size: 36px;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.news-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.create-post-button .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-post-button .btn:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.create-post-button .btn .material-icons {
+    font-size: 24px;
+}
+
+.news-filters {
+    margin: 16px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.news-filters select {
+    border-radius: 8px;
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230E1C2A'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 24px;
+    padding: 12px 40px 12px 24px;
+}
+
+.news-filters select:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    border-color: var(--primary-dark);
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FCF7FA'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+}
+
+.news-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.news-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--primary-bg-color);
+    transition: all 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.news-card a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.news-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.news-card:hover img {
+    transform: scale(1.05);
+}
+
+.news-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.05));
+    transition: all 0.3s ease;
+}
+
+.news-card:hover .news-content {
+    padding-bottom: 24px;
+}
+
+.news-content h2 {
+    color: var(--primary-light);
+    margin: 0 0 12px 0;
+    font-size: 24px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.news-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--primary-light);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.news-meta span:not(.material-icons) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.news-meta span:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.news-meta .material-icons {
+    font-size: 18px;
+}
+
+.no-content {
+    text-align: center;
+    padding: 48px;
+    color: var(--primary-light);
+    font-size: 20px;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin: 24px 0;
+}
+
+.no-content .material-icons {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.8;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0;
+}
+
+.pagination .page-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pagination .page-link:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pagination .page-link.active {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    pointer-events: none;
+}

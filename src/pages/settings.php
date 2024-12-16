@@ -187,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let isEditing = false;
     let originalValues = {};
 
-    // Сохраняем оригинальные значения
     inputs.forEach(input => {
         originalValues[input.name] = input.value;
     });

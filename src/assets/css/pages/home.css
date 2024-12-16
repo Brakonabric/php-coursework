@@ -20,6 +20,7 @@ main section:last-child {
 }
 main section h1, h2, h3 {
     color: var(--primary-light);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .welcome-banner {
@@ -34,6 +35,7 @@ main section h1, h2, h3 {
     margin-bottom: 8px;
     color: var(--primary-light);
     text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .subtitle {
@@ -76,7 +78,8 @@ section .section-header {
 
 section .section-header h2 {
     font-size: 28px;
-    margin: 0;    
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 section .section-header a {
@@ -148,33 +151,35 @@ section .section-header a:hover::after {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 8px;
-    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.05));
+    transition: all 0.3s ease;
 }
 
 .news-content h3 {
     color: var(--primary-light);
-    text-align: center;
+    margin: 0 0 12px 0;
     font-size: 24px;
     font-weight: 600;
-    padding: 0px 16px;
-    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .news-meta {
     display: flex;
+    justify-content: space-between;
     color: var(--primary-light);
     font-size: 16px;
     font-weight: 600;
-    padding: 0px 16px;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.news-meta span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.news-meta span:not(.material-icons) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
 }
 
 .news-grid .no-content {
@@ -258,6 +263,7 @@ section .section-header a:hover::after {
     gap: 4px;
     align-items: center;
     color: var(--primary-dark);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .event-details span:not(.material-icons) {
