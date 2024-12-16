@@ -215,3 +215,787 @@
     color: var(--primary-hover);
     pointer-events: none;
 }
+
+/* Стили для просмотра новости */
+.post-container {
+    background-color: var(--section-a-bg-color);
+    padding: 16px 32px;
+    margin: 8px auto;
+    width: 70%;
+    min-height: calc(100vh - 164px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                0 1px 3px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+}
+
+.post {
+    margin-bottom: 32px;
+}
+
+.post h1 {
+    color: var(--primary-light);
+    font-size: 36px;
+    margin: 0 0 16px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--primary-light);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.post-meta span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.post-image {
+    margin: 24px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.post-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.post-content {
+    color: var(--primary-light);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 24px 0;
+    white-space: pre-wrap;
+}
+
+.post-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.gallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.post-actions {
+    display: flex;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.post-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-edit {
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+}
+
+.btn-edit:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background-color: var(--error-bg-color);
+    color: var(--primary-dark);
+}
+
+.btn-delete:hover {
+    background-color: var(--error-color);
+    color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+/* Обновленные стили для комментариев */
+.comments-section {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.comments-section h2 {
+    color: var(--primary-light);
+    font-size: 24px;
+    margin-bottom: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comments-section h2::before {
+    content: 'chat';
+    font-family: 'Material Icons';
+    font-size: 28px;
+}
+
+.comment-form {
+    margin-bottom: 32px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 24px;
+    border-radius: 12px;
+}
+
+.comment-form .form-group {
+    margin-bottom: 16px;
+}
+
+.comment-form label {
+    color: var(--primary-light);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 16px;
+    border-radius: 8px;
+    border: 2px solid var(--primary-light);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--primary-light);
+    font-size: 16px;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-hover);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.comment-form .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-prompt {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.auth-prompt .material-icons {
+    font-size: 24px;
+    color: var(--primary-light);
+}
+
+.auth-prompt p {
+    color: var(--primary-light);
+    font-size: 16px;
+    margin: 0;
+}
+
+.auth-prompt a {
+    color: var(--primary-hover);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.auth-prompt a:hover {
+    color: var(--primary-dark);
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.comment {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comment:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comment-author,
+.comment-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-light);
+    font-size: 14px;
+}
+
+.comment-author {
+    font-weight: 600;
+}
+
+.comment-date {
+    opacity: 0.8;
+}
+
+.comment-meta .material-icons {
+    font-size: 20px;
+    opacity: 0.8;
+}
+
+.comment-content {
+    color: var(--primary-light);
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.no-comments {
+    text-align: center;
+    padding: 48px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--primary-light);
+}
+
+.no-comments .material-icons {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.8;
+}
+
+.no-comments p {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .comment-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .auth-prompt {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Стили для создания и редактирования новости */
+.create-post-container {
+    background-color: var(--section-a-bg-color);
+    padding: 16px 32px;
+    margin: 8px auto;
+    width: 70%;
+    min-height: calc(100vh - 164px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                0 1px 3px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+}
+
+.create-post-container h1 {
+    color: var(--primary-light);
+    font-size: 36px;
+    margin: 0 0 32px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.create-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: var(--primary-light);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid var(--primary-light);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--primary-light);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-hover);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.form-group input[type="file"] {
+    display: none;
+}
+
+.form-group .file-input-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.form-group .file-input-label:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.form-text {
+    color: var(--primary-light);
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.image-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.current-image,
+.current-images {
+    margin: 16px 0;
+}
+
+.current-image p,
+.current-images p {
+    color: var(--primary-light);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.delete-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+    z-index: 2;
+}
+
+.image-container:hover .delete-image {
+    opacity: 1;
+}
+
+.delete-image:hover {
+    background-color: var(--error-bg-color);
+    transform: scale(1.1);
+}
+
+.delete-image .material-icons {
+    color: var(--primary-light);
+    font-size: 20px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.form-actions .btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--primary-light);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.error-message {
+    background-color: var(--error-bg-color);
+    color: var(--primary-dark);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .post-container,
+    .create-post-container {
+        width: 90%;
+        padding: 16px;
+    }
+
+    .post h1 {
+        font-size: 28px;
+    }
+
+    .post-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .post-actions {
+        flex-direction: column;
+    }
+}
+
+/* Стили для форм загрузки файлов */
+.file-upload-wrapper {
+    margin-top: 8px;
+}
+
+.file-input-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.file-input-label:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.file-input-label .material-icons {
+    font-size: 24px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    color: var(--primary-light);
+    opacity: 0.8;
+}
+
+.file-info .material-icons {
+    font-size: 18px;
+}
+
+.preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.preview-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.preview-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    color: var(--primary-light);
+    font-size: 14px;
+}
+
+.preview-info .file-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.preview-info .file-size {
+    opacity: 0.8;
+}
+
+/* Стили для изображений в форме редактирования */
+.current-image,
+.current-images {
+    margin: 16px 0;
+}
+
+.current-image p,
+.current-images p {
+    color: var(--primary-light);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    margin: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-container img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.delete-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.image-container:hover .delete-image {
+    opacity: 1;
+}
+
+.delete-image:hover {
+    background-color: var(--error-bg-color);
+    transform: scale(1.1);
+}
+
+.delete-image .material-icons {
+    color: var(--primary-light);
+    font-size: 20px;
+}
+
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.preview-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.preview-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.preview-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    color: var(--primary-light);
+}
+
+.preview-info .file-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.preview-info .file-size {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .images-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .image-container img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .delete-image {
+        opacity: 1;
+    }
+}

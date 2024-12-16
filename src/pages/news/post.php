@@ -1,6 +1,6 @@
 <?php
 ob_start();
-$page_title = 'Просмотр новости';
+$page_title = 'Skatīt ziņu';
 include '../../includes/header.php';
 include '../../config.php';
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_post'])) {
             $stmt->bind_param('i', $post_id);
             $stmt->execute();
             
-            // Если все успешно, подтверждаем транзакцию
+            // Если вс�� успешно, подтверждаем транзакцию
             $conn->commit();
             
             // Удаляем изображения
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_post'])) {
     }
 }
 
-// Получение комментариев к новости
+// Получение комментариев к н��вости
 $sql = "SELECT c.*, u.name as user_name 
         FROM news_comments c 
         LEFT JOIN users u ON c.user_id = u.id 
@@ -127,13 +127,13 @@ $comments_result = $stmt->get_result();
             <h1><?= htmlspecialchars($post['title']) ?></h1>
             
             <div class="post-meta">
-                <span class="author">Автор: <?= htmlspecialchars($post['author_name']) ?></span>
-                <span class="date">Дата: <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?></span>
+                <span class="author">Autors: <?= htmlspecialchars($post['author_name']) ?></span>
+                <span class="date">Datums: <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?></span>
             </div>
             
             <?php if ($post['image_path_preview']): ?>
                 <div class="post-image">
-                    <img src="<?= htmlspecialchars($post['image_path_preview']) ?>" alt="Изображение к новости">
+                    <img src="<?= htmlspecialchars($post['image_path_preview']) ?>" alt="Ziņas attēls">
                 </div>
             <?php endif; ?>
             
@@ -149,7 +149,7 @@ $comments_result = $stmt->get_result();
                         foreach ($extra_images as $image_path):
                     ?>
                         <div class="gallery-item">
-                            <img src="<?= htmlspecialchars($image_path) ?>" alt="Дополнительное изображение">
+                            <img src="<?= htmlspecialchars($image_path) ?>" alt="Papildu attēls">
                         </div>
                     <?php 
                         endforeach;
@@ -160,41 +160,66 @@ $comments_result = $stmt->get_result();
             
             <?php if (hasAccess('coach', $_SESSION['user_role'])): ?>
                 <div class="post-actions">
-                    <a href="/pages/news/post/edit.php?id=<?= $post_id ?>" class="btn btn-edit">Редактировать</a>
-                    <form method="POST" class="delete-form" onsubmit="return confirm('Вы уверены, что хотите удалить этот пост?');">
-                        <button type="submit" name="delete_post" class="btn btn-delete">Удалить</button>
+                    <a href="/pages/news/post/edit.php?id=<?= $post_id ?>" class="btn btn-edit">
+                        <span class="material-icons">edit</span>
+                        Rediģēt
+                    </a>
+                    <form method="POST" class="delete-form" onsubmit="return confirm('Vai tiešām vēlaties dzēst šo ziņu?');">
+                        <button type="submit" name="delete_post" class="btn btn-delete">
+                            <span class="material-icons">delete</span>
+                            Dzēst
+                        </button>
                     </form>
                 </div>
             <?php endif; ?>
         </article>
         
         <section class="comments-section">
-            <h2>Комментарии</h2>
+            <h2>Komentāri</h2>
             
             <?php if (isset($_SESSION['user_id'])): ?>
                 <form method="POST" class="comment-form">
                     <div class="form-group">
-                        <label for="comment">Ваш комментарий:</label>
+                        <label for="comment">Jūsu komentārs:</label>
                         <textarea id="comment" name="comment" required></textarea>
                     </div>
-                    <button type="submit" class="btn">Отправить</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-icons">send</span>
+                        Nosūtīt
+                    </button>
                 </form>
             <?php else: ?>
-                <p>Чтобы оставить комментарий, пожалуйста, <a href="/auth/login.php">войдите</a> или <a href="/auth/register.php">зарегистрируйтесь</a>.</p>
+                <div class="auth-prompt">
+                    <span class="material-icons">info</span>
+                    <p>Lai pievienotu komentāru, lūdzu, <a href="/auth/login.php">piesakieties</a> vai <a href="/auth/register.php">reģistrējieties</a>.</p>
+                </div>
             <?php endif; ?>
             
             <div class="comments-list">
-                <?php while ($comment = $comments_result->fetch_assoc()): ?>
-                    <div class="comment">
-                        <div class="comment-meta">
-                            <span class="comment-author"><?= htmlspecialchars($comment['user_name']) ?></span>
-                            <span class="comment-date"><?= date('d.m.Y H:i', strtotime($comment['created_at'])) ?></span>
+                <?php if ($comments_result->num_rows > 0): ?>
+                    <?php while ($comment = $comments_result->fetch_assoc()): ?>
+                        <div class="comment">
+                            <div class="comment-meta">
+                                <div class="comment-author">
+                                    <span class="material-icons">account_circle</span>
+                                    <?= htmlspecialchars($comment['user_name']) ?>
+                                </div>
+                                <div class="comment-date">
+                                    <span class="material-icons">schedule</span>
+                                    <?= date('d.m.Y H:i', strtotime($comment['created_at'])) ?>
+                                </div>
+                            </div>
+                            <div class="comment-content">
+                                <?= nl2br(htmlspecialchars($comment['comment'])) ?>
+                            </div>
                         </div>
-                        <div class="comment-content">
-                            <?= nl2br(htmlspecialchars($comment['comment'])) ?>
-                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="no-comments">
+                        <span class="material-icons">chat_bubble_outline</span>
+                        <p>Pagaidām nav neviena komentāra. Esiet pirmais, kas komentē!</p>
                     </div>
-                <?php endwhile; ?>
+                <?php endif; ?>
             </div>
         </section>
     </div>

@@ -27,6 +27,9 @@ setlocale(LC_TIME, 'lv_LV.UTF-8');
         $css_file = match($current_page) {
             'index' => '/assets/css/pages/home.css',
             'news' => '/assets/css/pages/news.css',
+            'post' => '/assets/css/pages/news.css',
+            'create' => '/assets/css/pages/news.css',
+            'edit' => '/assets/css/pages/news.css',
             'team' => '/assets/css/pages/team.css',
             'contact' => '/assets/css/pages/contact.css',
             'calendar' => '/assets/css/pages/calendar.css',

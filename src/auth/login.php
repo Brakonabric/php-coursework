@@ -1,5 +1,4 @@
 <?php
-// Начинаем буферизацию вывода
 ob_start();
 
 session_start();
@@ -25,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_role'] = $user['role'];
         
-        // Очищаем буфер перед перенаправлением
         ob_end_clean();
         header('Location: /index.php');
         exit();
