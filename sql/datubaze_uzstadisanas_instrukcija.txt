@@ -1,0 +1,19 @@
+Datubāzes atjaunošanas instrukcija
+
+1. Pārliecinieties, ka Docker un Docker Compose ir instalēti jūsu sistēmā.
+
+2. Palaidiet Docker konteinerus:
+   docker-compose up -d
+
+3. Importējiet datubāzi, izmantojot šo komandu:
+   docker exec -i mysql mysql -u root -proot php_coursework < sql/database_dump.sql
+
+4. Pārbaudiet, vai datubāze ir veiksmīgi importēta:
+   docker exec -i mysql mysql -u root -proot -e "USE php_coursework; SHOW TABLES;"
+
+5. Ja viss ir veiksmīgi, aplikācijai vajadzētu darboties ar importēto datubāzi.
+
+Piezīmes:
+- Pārliecinieties, ka ports 3306 ir brīvs
+- Ja rodas problēmas ar piekļuvi, pārbaudiet lietotājvārdu un paroli konfigurācijas failā
+- Datubāzes dumps satur visus nepieciešamos datus aplikācijas darbībai 

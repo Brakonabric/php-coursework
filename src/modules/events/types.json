@@ -1,0 +1,61 @@
+{
+    "publicEvent": {
+        "label": "Publiskais pasākums",
+        "title": "",
+        "description": "",
+        "location": "",
+        "placeholder": {
+            "title": "Jauns pasākums",
+            "description": "Pasākuma apraksts",
+            "location": "Pasākuma vieta"
+        }
+    },
+    "teamTraining": {
+        "label": "Komandas treniņš",
+        "title": "Komandas treniņš",
+        "description": "Kopējais treniņš visiem komandas dalībniekiem",
+        "location": "Sporta zāle"
+    },
+    "individualTraining": {
+        "label": "Individuālais treniņš",
+        "title": "Individuālais treniņš",
+        "description": "Individuālais treniņš ar treneri",
+        "location": "Treniņu telpa"
+    },
+    "match": {
+        "label": "Spēle",
+        "title": "Spēle",
+        "description": "Komandas spēle",
+        "location": "Sporta halle"
+    },
+    "teamMeeting": {
+        "label": "Komandas sanāksme",
+        "title": "Komandas sanāksme",
+        "description": "Sanāksme visiem komandas dalībniekiem",
+        "location": "Sapulču telpa"
+    },
+    "coachMeeting": {
+        "label": "Treneru sanāksme",
+        "title": "Treneru sanāksme",
+        "description": "Sanāksme treneriem",
+        "location": "Treneru istaba"
+    },
+    "medicalCheckup": {
+        "label": "Medicīniskā pārbaude",
+        "title": "Medicīniskā pārbaude",
+        "description": "Regulārā medicīniskā pārbaude",
+        "location": "Medicīnas kabinets"
+    },
+    "teamBuilding": {
+        "label": "Komandas saliedēšana",
+        "title": "Komandas pasākums",
+        "description": "Komandas saliedēšanas aktivitātes",
+        "location": "Atpūtas telpa"
+    },
+    "tournament": {
+        "label": "Turnīrs",
+        "title": "Turnīrs",
+        "description": "Sporta turnīrs",
+        "location": "Sporta komplekss"
+    }
+} 

@@ -1,0 +1,192 @@
+:root {
+    --nav-bg-color: #0E1C2A;
+    --footer-bg-color: #0E1C2A;
+    --section-a-bg-color: #5f7faf;
+    --section-b-bg-color: #687dc2;
+    --primary-bg-color: #cfd5e0;
+
+    --primary-color: #B3C3E6;
+    --primary-light: white;
+    --primary-hover: #FCF7FA;
+    --primary-dark: #0E1C2A;
+
+    --error-color: #ff463a;
+    --error-bg-color: #ff5a52;
+    --success-color: #1dd866;
+    --success-bg-color: #27ff85;
+
+    --shadow-default: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --shadow-large: 0 8px 16px rgba(0, 0, 0, 0.2);
+    --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+    --border-radius-small: 4px;
+    --border-radius-medium: 8px;
+    --border-radius-large: 12px;
+    --border-radius-xl: 16px;
+    --border-radius-circle: 50%;
+    --border-radius-pill: 20px;
+
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-md: 18px;
+    --font-size-lg: 20px;
+    --font-size-xl: 24px;
+    --font-size-xxl: 36px;
+    --font-size-huge: 48px;
+
+    --container-width: 70%;
+    --container-height-base: 300px;
+    --container-max-width: 800px;
+
+    --grid-gap-sm: 8px;
+    --grid-gap-md: 16px;
+    --grid-gap-lg: 24px;
+    --grid-gap-xl: 36px;
+
+    --transition-fast: all 0.2s ease;
+    --transition-base: all 0.3s ease;
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 600;
+
+    --opacity-hover: 0.9;
+    --opacity-disabled: 0.7;
+    --opacity-light: 0.5;
+
+    --overlay-dark: rgba(0, 0, 0, 0.8);
+    --overlay-medium: rgba(0, 0, 0, 0.5);
+    --overlay-light: rgba(0, 0, 0, 0.1);
+
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1020;
+    --z-index-modal: 1030;
+    --z-index-tooltip: 1040;
+
+    --btn-height: 48px;
+    --btn-min-width: 160px;
+}
+
+.btn,
+.link-btn {
+    display: flex;
+    justify-content: center;
+    border: none;
+    min-width: var(--btn-min-width);
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-medium);
+    transition: var(--transition-base);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    height: var(--btn-height);
+}
+
+.link-btn {
+    height: var(--btn-height);
+}
+
+.btn .material-icons,
+.link-btn .material-icons {
+    font-size: var(--font-size-xl);
+}
+
+.pagination {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    align-items: center;
+    margin: var(--spacing-lg) 0;
+}
+
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+    border-radius: var(--border-radius-medium);
+    transition: var(--transition-base);
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+}
+
+.page-link:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.page-link.active {
+    background-color: var(--primary-dark);
+    color: var(--primary-light);
+    pointer-events: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-hover);
+    color: var(--primary-dark);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary {
+    background-color: var(--section-a-bg-color);
+    color: var(--primary-light);
+}
+
+.btn-secondary:hover {
+    background-color: var(--section-b-bg-color);
+    color: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-danger {
+    background-color: var(--error-bg-color);
+    color: var(--primary-dark);
+}
+
+.btn-danger:hover {
+    background-color: var(--error-color);
+    color: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-success {
+    background-color: var(--success-bg-color);
+    color: var(--primary-dark);
+}
+
+.btn-success:hover {
+    background-color: var(--success-color);
+    color: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}

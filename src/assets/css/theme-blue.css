@@ -1,0 +1,12 @@
+:root {
+    --nav-bg-color: #0E1C2A;
+    --footer-bg-color: #0E1C2A;
+    --section-a-bg-color: #5f7faf;
+    --section-b-bg-color: #687dc2;
+    --primary-bg-color: #cfd5e0;
+
+    --primary-color: #B3C3E6;
+    --primary-light: white;
+    --primary-hover: #FCF7FA;
+    --primary-dark: #0E1C2A;
+} 

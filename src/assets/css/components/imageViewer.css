@@ -1,0 +1,305 @@
+.iv-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay-dark);
+    z-index: var(--z-index-modal);
+    display: none;
+}
+
+.iv-modal-overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: var(--z-index-modal);
+}
+
+.iv-modal-header {
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    z-index: 10001;
+    transition: right 0.3s ease;
+}
+
+.iv-modal.with-sidebar .iv-modal-header {
+    right: 320px;
+}
+
+.iv-close-button {
+    color: var(--primary-light);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    background: none;
+    border: none;
+    font-size: var(--font-size-xl);
+}
+
+.iv-modal-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    position: relative;
+    z-index: var(--z-index-modal);
+    transition: var(--transition-base);
+}
+
+.iv-modal.with-sidebar .iv-modal-main {
+    padding-right: calc(300px + 2rem);
+}
+
+.iv-nav-button {
+    background: none;
+    border: none;
+    color: var(--primary-light);
+    font-size: var(--font-size-xxl);
+    cursor: pointer;
+    padding: var(--spacing-md);
+    transition: var(--transition-base);
+    z-index: var(--z-index-tooltip);
+}
+
+.iv-nav-button:hover {
+    opacity: var(--opacity-hover);
+}
+
+.iv-modal-content {
+    max-width: 80%;
+    max-height: 80vh;
+    position: relative;
+    z-index: var(--z-index-modal);
+}
+
+.iv-image-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iv-image-container img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.iv-image-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--overlay-dark);
+    padding: var(--spacing-md);
+    color: var(--primary-light);
+    z-index: var(--z-index-tooltip);
+}
+
+.iv-photo-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+}
+
+.iv-photo-actions span {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.iv-comments-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    background: var(--section-a-bg-color);
+    padding: 1rem;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: var(--transition-base);
+    z-index: var(--z-index-tooltip);
+    color: var(--primary-light);
+}
+
+.iv-modal.with-sidebar .iv-comments-sidebar {
+    transform: translateX(0);
+}
+
+.iv-comments-header {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--overlay-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.iv-comments-header h3 {
+    color: var(--primary-light);
+    margin: 0;
+    font-size: var(--font-size-lg);
+}
+
+.iv-comments-header .delete-photo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    min-width: auto;
+    height: auto;
+}
+
+.iv-comments-header .delete-photo .material-icons {
+    font-size: var(--font-size-base);
+}
+
+.iv-comments-list {
+    padding: var(--spacing-md) 0;
+}
+
+.iv-comment {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--overlay-light);
+    background: var(--overlay-light);
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--border-radius-medium);
+}
+
+.iv-comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--primary-light);
+    opacity: var(--opacity-light);
+}
+
+.iv-comment-text {
+    color: var(--primary-light);
+}
+
+.iv-comment-form {
+    padding: var(--spacing-sm);
+    position: sticky;
+    bottom: 0;
+    background: var(--section-a-bg-color);
+    border-top: 1px solid var(--overlay-light);
+}
+
+.iv-comment-form textarea {
+    width: 100%;
+    padding: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+    border: 1px solid var(--overlay-light);
+    border-radius: var(--border-radius-small);
+    background: var(--overlay-light);
+    color: var(--primary-light);
+    resize: vertical;
+}
+
+.iv-comment-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-hover);
+}
+
+.iv-submit-comment {
+    background: var(--primary-hover);
+    color: var(--primary-dark);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.iv-submit-comment:hover {
+    background: var(--primary-dark);
+    color: var(--primary-hover);
+}
+
+.iv-likes-count.liked .material-icons {
+    color: var(--error-color);
+}
+
+.iv-comments-list .no-comments {
+    text-align: center;
+    padding: var(--spacing-xxl);
+    background-color: var(--overlay-light);
+    border-radius: var(--border-radius-large);
+    color: var(--primary-light);
+}
+
+.iv-comments-list .no-comments .material-icons {
+    font-size: var(--font-size-huge);
+    margin-bottom: var(--spacing-md);
+    opacity: var(--opacity-light);
+    display: block;
+}
+
+.iv-comments-list .no-comments p {
+    font-size: var(--font-size-base);
+    margin: 0;
+    opacity: var(--opacity-light);
+}
+
+.auth-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    background-color: var(--overlay-light);
+    border-radius: var(--border-radius-medium);
+    margin: var(--spacing-sm) 0;
+    text-align: center;
+    gap: var(--spacing-sm);
+}
+
+.auth-prompt-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-prompt-icon .material-icons {
+    color: var(--primary-light);
+    font-size: var(--font-size-lg);
+    opacity: var(--opacity-light);
+}
+
+.auth-prompt-message {
+    flex: 1;
+}
+
+.auth-prompt-message p {
+    margin: 0;
+    color: var(--primary-light);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    word-wrap: break-word;
+    opacity: var(--opacity-light);
+}
+
+.auth-prompt a {
+    color: var(--primary-hover);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-prompt a:hover {
+    text-decoration: underline;
+    color: var(--primary-light);
+} 
